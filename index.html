@@ -1,31 +1,46 @@
 <!doctype html>
 <html lang="ko">
 <head>
+  <!--
+    ✅ 목적: 간결한 원페이지 CV
+    - 불필요/미사용 코드 제거, 다크모드 색상 버그 수정, 메타데이터 보정
+    - 각 블록에 자세한 주석 추가
+  -->
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light dark" />
+
   <title>Seungwoo Baek</title>
-  <meta name="description" content="백승우의 이력서와 프로젝트, 연구 실적을 소개하는 간결하고 시원한 원페이지 CV." />
+  <meta name="description" content="백승우의 이력서와 프로젝트, 연구 실적을 소개하는 간결한 원페이지 CV." />
+
+  <!-- Open Graph: 공유 미리보기용. 실제 배포 URL/이미지로 업데이트하세요. -->
   <meta property="og:title" content="Seungwoo Baek CV" />
   <meta property="og:description" content="간결하고 시원한 원페이지 CV" />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://username.github.io/" />
-  <meta property="og:image" content="https://username.github.io/og-image.png" />
-  <link rel="icon" href="favicon.ico" />
+  <meta property="og:url" content="https://safd-00.github.io/" />
+  <meta property="og:image" content="/og-image.png" />
+
+  <link rel="icon" href="/favicon.ico" />
+
   <style>
+    /*
+      ========== 디자인 토큰 ==========
+      - 라이트/다크 모드 모두에서 재사용할 색/치수 변수
+    */
     :root {
       --bg: #ffffff;
-      --text: #0f172a; /* slate-900 */
+      --text: #0f172a;  /* slate-900 */
       --muted: #475569; /* slate-600 */
       --card: #f8fafc;  /* slate-50 */
-      --accent: #2563eb; /* blue-600 */
+      --accent: #2563eb;   /* blue-600 */
       --accent-2: #0ea5e9; /* sky-500 */
-      --border: #e2e8f0; /* slate-200 */
-      --maxw: 960px;
+      --border: #e2e8f0;   /* slate-200 */
+      --maxw: 960px;       /* 본문 최대 너비 */
     }
     @media (prefers-color-scheme: dark) {
       :root {
         --bg: #0b1220;
-        --text: #e5e7eb;
+        --text: #e5e7eb;  /* 다크에서 본문 텍스트는 밝게 */
         --muted: #94a3b8;
         --card: #0f172a;
         --accent: #60a5fa;
@@ -33,6 +48,8 @@
         --border: #1f2937;
       }
     }
+
+    /* 기본 레이아웃/타이포 */
     * { box-sizing: border-box; }
     html, body { height: 100%; }
     body {
@@ -45,16 +62,23 @@
       text-rendering: optimizeLegibility;
     }
     .container { max-width: var(--maxw); margin: 0 auto; padding: 24px; }
-    header.hero { padding: 72px 0 24px; }
 
-    /* === 새로 추가: 사진+텍스트 좌우 배치 === */
-    header.hero { display: flex; align-items: center; gap: 24px; }
+    /*
+      ========== 헤더(프로필) ==========
+      - 사진/텍스트 좌우 배치
+      - 한 곳에서 패딩/레이아웃을 정의 (중복 선언 제거)
+    */
+    header.hero {
+      padding: 72px 0 24px;
+      display: flex; align-items: center; gap: 24px;
+    }
+    /* 프로필 이미지: CLS 방지를 위해 width/height는 HTML 속성에도 지정 */
     .profile-pic {
       width: 140px; height: 180px; object-fit: cover;
       border-radius: 12px; border: 1px solid var(--border);
       flex: 0 0 auto;
     }
-    .hero-right { min-width: 0; } /* 줄바꿈/오버플로우 제어 */
+    .hero-right { min-width: 0; } /* 텍스트 줄바꿈/오버플로 제어 */
 
     /* 모바일에서는 위아래 스택 */
     @media (max-width: 640px) {
@@ -64,10 +88,16 @@
 
     .name { font-size: clamp(32px, 6vw, 56px); font-weight: 800; letter-spacing: -0.02em; margin: 0 0 8px; }
     .tagline { font-size: clamp(16px, 2.4vw, 20px); color: var(--muted); margin: 0 0 20px; }
+
+    /* 빠른 링크(칩) 영역: 다크모드 가독성을 위해 텍스트 색은 var(--text) 사용 */
     .chipbar { display: flex; flex-wrap: wrap; gap: 10px; margin: 20px 0 8px; }
-    .chipbar a { text-decoration: none; color: #000; border: 1px solid var(--border); background: #fff3; padding: 8px 12px; border-radius: 999px; display: inline-flex; align-items: center; gap: 8px; }
+    .chipbar a { text-decoration: none; color: var(--text); border: 1px solid var(--border); background: #fff3; padding: 8px 12px; border-radius: 999px; display: inline-flex; align-items: center; gap: 8px; }
     .chipbar a:hover { border-color: var(--accent); box-shadow: 0 4px 14px rgba(37,99,235,.18); transform: translateY(-1px); transition: .2s; }
 
+    /*
+      ========== 상단 내비게이션 ==========
+      - sticky + blur 배경
+    */
     nav.topnav { position: sticky; top: 0; backdrop-filter: saturate(180%) blur(8px); background: color-mix(in oklab, var(--bg) 85%, transparent); border-bottom: 1px solid var(--border); z-index: 50; }
     nav.topnav .container { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
     .nav-brand { font-weight: 700; letter-spacing: -0.01em; }
@@ -75,34 +105,44 @@
     .nav-links a { color: var(--muted); text-decoration: none; padding: 12px 6px; }
     .nav-links a:hover { color: var(--accent); }
 
-    /* === 기존 요청: 본문 내 링크도 검정 & 밑줄 제거 === */
-    .card a, .item h3 a, #publications a { color:#000; text-decoration:none; }
-    .card a:hover, .item h3 a:hover, #publications a:hover { text-decoration:none; }
+    /* 본문 내 링크를 본문색으로(밑줄 제거). 다크 모드에서도 가독성 유지 */
+    .card a, .item h3 a, #publications a { color: var(--text); text-decoration: none; }
+    .card a:hover, .item h3 a:hover, #publications a:hover { text-decoration: none; }
 
+    /* 섹션/카드 공통 */
     section { padding: 56px 0; }
     section h2 { font-size: clamp(22px, 3vw, 28px); margin: 0 0 20px; letter-spacing: -0.01em; }
     .card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 20px; }
     .grid { display: grid; gap: 16px; }
     .grid.two { grid-template-columns: repeat(2, minmax(0,1fr)); }
-    .grid.three { grid-template-columns: repeat(3, minmax(0,1fr)); }
-    @media (max-width: 860px) { .grid.two, .grid.three { grid-template-columns: 1fr; } }
+    /* .grid.three (미사용) 제거 */
+    @media (max-width: 860px) { .grid.two { grid-template-columns: 1fr; } }
+
     .item h3 { margin: 0 0 6px; font-size: 18px; }
     .item .meta { color: var(--muted); font-size: 14px; }
     .pill { display:inline-block; border:1px solid var(--border); padding:2px 8px; border-radius:999px; font-size:12px; color:var(--muted); }
     ul.clean { list-style: none; padding: 0; margin: 0; }
     ul.clean li { padding: 10px 0; border-bottom: 1px dashed var(--border); }
     ul.clean li:last-child { border-bottom: 0; }
+
     footer { padding: 40px 0 80px; color: var(--muted); font-size: 14px; text-align: center; }
+
     .btn { display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:12px; border:1px solid var(--border); text-decoration:none; color:var(--text); }
-    .btn.primary { background: linear-gradient(90deg, var(--accent), var(--accent-2)); color: white; border: none; }
+    /* .btn.primary (미사용) 제거 */
     .btn:hover { transform: translateY(-1px); box-shadow: 0 8px 18px rgba(0,0,0,.08); transition: .2s; }
+
     .row { display:flex; gap:16px; flex-wrap:wrap; align-items:center; }
     .spacer { height: 16px; }
+
+    /* 스크린리더용 skip link */
     .sr { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 
-    /* --- 외부 링크를 사이트(도메인) 색으로 표시 --- */
-    a.brand-link { 
-      color: var(--brand) !important;           /* 기존 검정 고정 규칙 덮어쓰기 */
+    /*
+      ========== 외부 링크: 도메인 브랜드 컬러 적용 ==========
+      - JS가 a.brand-link 클래스를 붙이면 이 규칙으로 본문색을 덮어쓴다.
+    */
+    a.brand-link {
+      color: var(--brand) !important; /* 본문색 강제 덮어쓰기 */
       text-decoration: none;
     }
     a.brand-link:hover {
@@ -113,13 +153,11 @@
     .chipbar a.brand-link,
     .card a.brand-link,
     .item h3 a.brand-link,
-    #publications a.brand-link {
-      color: var(--brand) !important;
-    }
+    #publications a.brand-link { color: var(--brand) !important; }
 
-    /* Print for PDF */
+    /* 인쇄(PDF 저장) 최적화: 네비게이션 숨김, 여백/폰트 크기 조정 */
     @media print {
-      nav.topnav, .btn-print { display: none !important; }
+      nav.topnav { display: none !important; }
       .container { max-width: 900px; padding: 0; }
       section { padding: 18px 0; }
       .card { border: none; background: transparent; padding: 0; }
@@ -129,7 +167,10 @@
   </style>
 </head>
 <body>
+  <!-- 키보드 사용자 접근성 향상: 본문으로 바로 가기 -->
   <a href="#main" class="sr">본문으로 건너뛰기</a>
+
+  <!-- 상단 고정 내비게이션 -->
   <nav class="topnav" aria-label="주요 탐색">
     <div class="container">
       <div class="nav-brand">Seungwoo Baek</div>
@@ -143,34 +184,36 @@
     </div>
   </nav>
 
-  <!-- === 변경된 헤더: 왼쪽 사진 + 오른쪽 텍스트/링크 === -->
+  <!-- 헤더: 왼쪽 사진 + 오른쪽 텍스트/링크 -->
   <header class="hero container" id="main">
-    <img src="photo.jpg" alt="Seungwoo Baek" class="profile-pic" />
+    <!-- CLS 방지를 위해 width/height 지정, 즉시 렌더를 위해 loading="eager" -->
+    <img src="/photo.jpg" alt="Seungwoo Baek" class="profile-pic" width="140" height="180" decoding="async" loading="eager" />
     <div class="hero-right">
       <h1 class="name">Seungwoo Baek</h1>
       <div class="chipbar" aria-label="빠른 링크">
         <a href="mailto:bsw8369@g.skku.edu" aria-label="E-Mail">✉️ <span><strong>E-Mail</strong></span></a>
-        <a href="https://www.linkedin.com/in/name-seungwoo-baek/" target="_blank" rel="noopener">📱 <span><strong>LinkedIn</strong></span></a>
-        <a href="https://github.com/SaFD-00" target="_blank" rel="noopener">💻 <span><strong>GitHub</strong></span></a>
+        <a href="https://www.linkedin.com/in/name-seungwoo-baek/" target="_blank" rel="noopener noreferrer">📱 <span><strong>LinkedIn</strong></span></a>
+        <a href="https://github.com/SaFD-00" target="_blank" rel="noopener noreferrer">💻 <span><strong>GitHub</strong></span></a>
       </div>
     </div>
   </header>
 
   <main class="container">
+    <!-- About -->
     <section id="about">
       <h2>About</h2>
       <div class="card">
         <p>
-          I’m a Master’s student in Artificial Intelligence at <strong>Sungkyunkwan University</strong>. 
+          I’m a Master’s student in Artificial Intelligence at <strong>Sungkyunkwan University</strong>.
           My research focuses on <strong>GUI agents</strong>, <strong>multi-step reasoning</strong>, and <strong>self-play</strong>
           — building LLM-driven agents that can plan, act, and learn from interaction on real user interfaces.
         </p>
         <p>
-          At FCLab, I work on tool-using agents and evaluation for complex, multi-step tasks. 
-          Previously at OUTTA, I taught the OUTTA AI Bootcamp, contributed to a deep learning book project, and carried out AI alignment research.
+          At <strong>FCLab</strong>, I work on tool-using agents and evaluation for complex, multi-step tasks.
+          Previously at <strong>OUTTA</strong>, I taught the OUTTA AI Bootcamp, contributed to a deep learning book project, and carried out AI alignment research.
         </p>
         <p>
-          Before SKKU, I earned a B.S. in Intelligent Mechatronics Engineering from Sejong University. 
+          I earned a B.S. in Intelligent Mechatronics Engineering from <strong>Sejong University</strong>.
           I enjoy open-source and collaboration - feel free to reach out.
         </p>
         <div class="spacer"></div>
@@ -181,12 +224,13 @@
       </div>
     </section>
 
+    <!-- Education -->
     <section id="education">
       <h2>Education</h2>
       <div class="grid two">
         <div class="card item">
           <h3>
-            <a href="https://www.skku.edu/eng/index.do" target="_blank">Sungkyunkwan University</a>
+            <a href="https://www.skku.edu/eng/index.do" target="_blank" rel="noopener noreferrer">Sungkyunkwan University</a>
           </h3>
           <div class="meta">M.S.</div>
           <div class="meta">Department of Artificial Intelligence</div>
@@ -194,7 +238,7 @@
         </div>
         <div class="card item">
           <h3>
-            <a href="https://en.sejong.ac.kr/eng/index.do" target="_blank">Sejong University</a>
+            <a href="https://en.sejong.ac.kr/eng/index.do" target="_blank" rel="noopener noreferrer">Sejong University</a>
           </h3>
           <div class="meta">B.S.</div>
           <div class="meta">Department of Intelligent Mechatronics Engineering</div>
@@ -202,54 +246,51 @@
         </div>
       </div>
     </section>
-    
+
+    <!-- Experience -->
     <section id="experience">
       <h2>Experience</h2>
       <div class="grid two">
         <article class="card item">
           <h3>
-            <a href="https://outta.ai/" target="_blank">OUTTA</a>
+            <a href="https://outta.ai/" target="_blank" rel="noopener noreferrer">OUTTA</a>
           </h3>
           <div class="meta">2022 - Present</div>
-          <ul>
-            <li>Instructor of OUTTA AI Bootcamp</li>
-            <li>Deep Learning Book Publishing</li>
-            <li>Research</li>
-          </ul>
+          <p>At OUTTA, I serve as an instructor for the OUTTA AI Bootcamp, contribute to a deep learning book, and conduct AI research.</p>
         </article>
 
         <article class="card item">
           <h3>
-            <a href="https://sites.google.com/view/fclab-skku" target="_blank">FCLab</a>
+            <a href="https://sites.google.com/view/fclab-skku" target="_blank" rel="noopener noreferrer">FCLab</a>
           </h3>
           <div class="meta">2025 - Present</div>
-          <ul>
-            <li>Research</li>
-          </ul>
+          <p>At FCLab, I conduct research on tool-using GUI agents and evaluation for complex, multi-step tasks.</p>
         </article>
       </div>
     </section>
 
+    <!-- Publications -->
     <section id="publications">
       <h2>Publications</h2>
       <div class="card">
         <ul class="clean">
           <li>
-            <a href="https://www.dbpia.co.kr/journal/articleDetail?nodeId=NODE12057944" target="_blank">Towards Light-weight, Ophthalmology-specialized Vision-language Models via Synthesized Diagnostic Rationales</a>.
+            <a href="https://www.dbpia.co.kr/journal/articleDetail?nodeId=NODE12057944" target="_blank" rel="noopener noreferrer">Towards Light-weight, Ophthalmology-specialized Vision-language Models via Synthesized Diagnostic Rationales</a>.
             <span class="meta"><strong>Seungwoo Baek</strong>, Kai Tzu-iunn Ong, Jiu Kim, Junwon Seo, Jinyeong Yeo, Eunyeong Choi. 2025.</span>
           </li>
         </ul>
       </div>
     </section>
 
+    <!-- Contact -->
     <section id="contact">
       <h2>Contact</h2>
       <div class="card">
         <p>Welcome inquiries regarding collaboration, recruitment, and research at any time</p>
         <div class="row">
           <a class="btn" href="mailto:bsw8369@g.skku.edu">✉️ <strong>E-Mail</strong></a>
-          <a class="btn" href="https://www.linkedin.com/in/name-seungwoo-baek" target="_blank" rel="noopener">📱 <strong>LinkedIn</strong></a>
-          <a class="btn" href="https://github.com/SaFD-00" target="_blank" rel="noopener">💻 <strong>GitHub</strong></a>
+          <a class="btn" href="https://www.linkedin.com/in/name-seungwoo-baek" target="_blank" rel="noopener noreferrer">📱 <strong>LinkedIn</strong></a>
+          <a class="btn" href="https://github.com/SaFD-00" target="_blank" rel="noopener noreferrer">💻 <strong>GitHub</strong></a>
         </div>
       </div>
     </section>
@@ -262,7 +303,8 @@
   </footer>
 
   <script>
-    // Smooth scroll
+    // ================== 유틸: 부드러운 앵커 스크롤 ==================
+    // 페이지 내 #섹션 링크를 클릭하면 스무스 스크롤로 이동합니다.
     document.querySelectorAll('a[href^="#"]').forEach(a => {
       a.addEventListener('click', e => {
         const id = a.getAttribute('href');
@@ -275,20 +317,23 @@
         }
       });
     });
-    // Footer year
+
+    // ================== 푸터 연도 자동 갱신 ==================
     document.getElementById('y').textContent = new Date().getFullYear();
-    // Print button
-    document.querySelectorAll('.btn-print').forEach(btn => btn.addEventListener('click', e => { e.preventDefault(); window.print(); }));
   </script>
 
-  <!-- 외부 링크 도메인별 브랜드 컬러 적용 -->
+  <!--
+    외부 링크 도메인에 따라 포인트 컬러를 적용합니다.
+    - 본문 내 a[href^="http"]를 순회하며 아래 BRAND_COLORS에 매핑된 도메인에는
+      a.brand-link 클래스를 부여하고, --brand 커스텀 프로퍼티를 주입합니다.
+    - 다크 모드에서 너무 어두운 색은 약간 밝게 보정합니다.
+  -->
   <script>
   (() => {
-    // 필요한 도메인만 우선 등록 (원하는 도메인/색은 자유롭게 추가)
+    // 필요한 도메인과 대표 색상만 등록 (원하면 자유롭게 추가/수정)
     const BRAND_COLORS = {
-      "linkedin.com": "#24292F",
-      "github.com":   "#24292F",
-      "google.com":   "#0A66C2",
+      "linkedin.com": "#0A66C2", // LinkedIn
+      "github.com":   "#24292F", // GitHub
       "skku.edu":     "#0A66C2",
       "sejong.ac.kr": "#0A66C2",
       "outta.ai":     "#0A66C2",
@@ -297,6 +342,7 @@
 
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
+    // HEX <-> RGB 변환 및 밝기 보정 유틸
     function hexToRgb(hex) {
       const h = hex.replace('#','');
       const bigint = parseInt(h.length === 3 ? h.split('').map(c=>c+c).join('') : h, 16);
@@ -306,7 +352,7 @@
       const to = v => v.toString(16).padStart(2,'0');
       return `#${to(r)}${to(g)}${to(b)}`;
     }
-    function lighten(hex, amount = 0.5) { // 0~1
+    function lighten(hex, amount = 0.55) { // 0~1
       const {r,g,b} = hexToRgb(hex);
       const L = (c) => Math.round(c + (255 - c) * amount);
       return rgbToHex({ r: L(r), g: L(g), b: L(b) });
@@ -331,15 +377,17 @@
         if (!brand) return;
 
         const finalColor = (prefersDark && isTooDark(brand)) ? lighten(brand, 0.55) : brand;
-
         a.style.setProperty('--brand', finalColor);
         a.classList.add('brand-link');
-      } catch (e) { /* ignore malformed hrefs */ }
+      } catch (e) { /* 잘못된 href는 무시 */ }
     });
   })();
   </script>
 
-  <!-- JSON-LD for richer search results -->
+  <!--
+    검색엔진 리치 결과(구조화 데이터). 실제 프로필만 남기고 플레이스홀더 제거.
+    - sameAs는 존재하는 링크로만 유지
+  -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -349,7 +397,6 @@
     "email": "bsw8369@g.skku.edu",
     "sameAs": [
       "https://github.com/SaFD-00",
-      "https://scholar.google.com/citations?user=YOUR_ID",
       "https://www.linkedin.com/in/name-seungwoo-baek/"
     ],
     "jobTitle": "Research Engineer",
