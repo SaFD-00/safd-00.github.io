@@ -106,7 +106,9 @@
     .nav-links a:hover { color: var(--accent); }
 
     /* 본문 내 링크를 본문색으로(밑줄 제거). 다크 모드에서도 가독성 유지 */
-    .card a, .item h3 a, #publications a { color: var(--text); text-decoration: none; }
+    .card a:not([href^="mailto:"]):not([href*="linkedin.com"]):not([href*="github.com"]),
+    .item h3 a:not([href^="mailto:"]):not([href*="linkedin.com"]):not([href*="github.com"]),
+    #publications a:not([href^="mailto:"]):not([href*="linkedin.com"]):not([href*="github.com"]) { color: #0A66C2; text-decoration: none; }
     .card a:hover, .item h3 a:hover, #publications a:hover { text-decoration: none; }
 
     /* 섹션/카드 공통 */
@@ -276,7 +278,6 @@
       <div class="card">
         <ul class="clean">
           <li>
-            <strong>[1]</strong>
             <a href="https://www.dbpia.co.kr/journal/articleDetail?nodeId=NODE12057944" target="_blank" rel="noopener noreferrer">Towards Light-weight, Ophthalmology-specialized Vision-language Models via Synthesized Diagnostic Rationales</a>.
             <span class="meta"><strong>Seungwoo Baek</strong>, Kai Tzu-iunn Ong, Jiu Kim, Junwon Seo, Jinyeong Yeo, Eunyeong Choi. 2025.</span>
           </li>
@@ -346,8 +347,6 @@
   (() => {
     // 필요한 도메인과 대표 색상만 등록 (원하면 자유롭게 추가/수정)
     const BRAND_COLORS = {
-      "linkedin.com": "#0A66C2",
-      "github.com":   "#24292F",
       "skku.edu":     "#0A66C2",
       "sejong.ac.kr": "#0A66C2",
       "outta.ai":     "#0A66C2",
@@ -358,6 +357,9 @@
     const BRAND_PATH_COLORS = [
       { host: "sites.google.com", pathPrefix: "/view/fclab-skku", color: "#0A66C2" }
     ];
+
+    // 브랜드 색을 적용하지 않을 호스트 (예외 처리: LinkedIn, GitHub)
+    const SKIP_HOSTS = new Set(["linkedin.com", "github.com"]);
 
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
@@ -381,18 +383,18 @@
       const luminance = (0.2126*(r/255)) + (0.7152*(g/255)) + (0.0722*(b/255));
       return luminance < 0.35;
     }
+    function hostMatches(h, domain) {
+      return h === domain || h.endsWith(`.${domain}`);
+    }
     function pickBrandColor(u) {
       const h = u.hostname.replace(/^www\./,'');
       // 1) 호스트 기반 매칭
       for (const key of Object.keys(BRAND_COLORS)) {
-        if (h === key || h.endsWith(`.${key}`)) return BRAND_COLORS[key];
+        if (hostMatches(h, key)) return BRAND_COLORS[key];
       }
       // 2) 경로 기반 매칭 (예: sites.google.com/view/fclab-skku)
       for (const rule of BRAND_PATH_COLORS) {
         if (h === rule.host && u.pathname.startsWith(rule.pathPrefix)) return rule.color;
-      }
-      return null;
-    }`)) return BRAND_COLORS[key];
       }
       return null;
     }
@@ -400,6 +402,11 @@
     document.querySelectorAll('a[href^="http"]').forEach(a => {
       try {
         const u = new URL(a.href);
+        const h = u.hostname.replace(/^www\./,'');
+        // LinkedIn/GitHub는 예외 처리: brand-link 적용하지 않음
+        for (const s of SKIP_HOSTS) {
+          if (hostMatches(h, s)) return;
+        }
         const brand = pickBrandColor(u);
         if (!brand) return;
 
