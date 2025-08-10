@@ -75,7 +75,7 @@
     .nav-links a { color: var(--muted); text-decoration: none; padding: 12px 6px; }
     .nav-links a:hover { color: var(--accent); }
 
-    /* === 요청: 본문 내 링크도 검정 & 밑줄 제거 === */
+    /* === 기존 요청: 본문 내 링크도 검정 & 밑줄 제거 === */
     .card a, .item h3 a, #publications a { color:#000; text-decoration:none; }
     .card a:hover, .item h3 a:hover, #publications a:hover { text-decoration:none; }
 
@@ -99,6 +99,23 @@
     .row { display:flex; gap:16px; flex-wrap:wrap; align-items:center; }
     .spacer { height: 16px; }
     .sr { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+    /* --- 외부 링크를 사이트(도메인) 색으로 표시 --- */
+    a.brand-link { 
+      color: var(--brand) !important;           /* 기존 검정 고정 규칙 덮어쓰기 */
+      text-decoration: none;
+    }
+    a.brand-link:hover {
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      text-decoration-thickness: 2px;
+    }
+    .chipbar a.brand-link,
+    .card a.brand-link,
+    .item h3 a.brand-link,
+    #publications a.brand-link {
+      color: var(--brand) !important;
+    }
 
     /* Print for PDF */
     @media print {
@@ -133,7 +150,7 @@
       <h1 class="name">Seungwoo Baek</h1>
       <div class="chipbar" aria-label="빠른 링크">
         <a href="mailto:bsw8369@g.skku.edu" aria-label="E-Mail">✉️ <span><strong>E-Mail</strong></span></a>
-        <a href="https://www.linkedin.com/in/name-seungwoo-baek/" target="_blank" rel="noopener">📱 <span><strong>Linkedin</strong></span></a>
+        <a href="https://www.linkedin.com/in/name-seungwoo-baek/" target="_blank" rel="noopener">📱 <span><strong>LinkedIn</strong></span></a>
         <a href="https://github.com/SaFD-00" target="_blank" rel="noopener">💻 <span><strong>GitHub</strong></span></a>
       </div>
     </div>
@@ -218,8 +235,8 @@
       <div class="card">
         <ul class="clean">
           <li>
-            <a href="https://www.dbpia.co.kr/journal/articleDetail?nodeId=NODE12057944" target="_blank"><strong>Towards Light-weight, Ophthalmology-specialized Vision-language Models via Synthesized Diagnostic Rationales</strong>strong</a>
-            <span class="meta"><strong>Seungwoo Baek</strong>, Kai Tzu-iunn Ong, Jiu Kim, Junwon Seo, Jinyeong Yeo, Eunyeong Choi. 2025.</span>
+            <a href="https://www.dbpia.co.kr/journal/articleDetail?nodeId=NODE12057944" target="_blank">Towards Light-weight, Ophthalmology-specialized Vision-language Models via Synthesized Diagnostic Rationales</a>
+            <span class="meta">. <strong>Seungwoo Baek</strong>, Kai Tzu-iunn Ong, Jiu Kim, Junwon Seo, Jinyeong Yeo, Eunyeong Choi. 2025.</span>
           </li>
         </ul>
       </div>
@@ -228,7 +245,7 @@
     <section id="contact">
       <h2>Contact</h2>
       <div class="card">
-        <p><strong>Welcome inquiries regarding collaboration, recruitment, and research at any time.</strong></p>
+        <p>Welcome inquiries regarding collaboration, recruitment, and research at any time</p>
         <div class="row">
           <a class="btn" href="mailto:bsw8369@g.skku.edu">✉️ <strong>E-Mail</strong></a>
           <a class="btn" href="https://www.linkedin.com/in/name-seungwoo-baek" target="_blank" rel="noopener">📱 <strong>LinkedIn</strong></a>
@@ -262,6 +279,65 @@
     document.getElementById('y').textContent = new Date().getFullYear();
     // Print button
     document.querySelectorAll('.btn-print').forEach(btn => btn.addEventListener('click', e => { e.preventDefault(); window.print(); }));
+  </script>
+
+  <!-- 외부 링크 도메인별 브랜드 컬러 적용 -->
+  <script>
+  (() => {
+    // 필요한 도메인만 우선 등록 (원하는 도메인/색은 자유롭게 추가)
+    const BRAND_COLORS = {
+      "linkedin.com": "#0A66C2",
+      "github.com":   "#24292F",
+      "google.com":   "#4285F4",            // Google / Scholar / Sites 하위 도메인 포함
+      "scholar.google.com": "#4285F4",
+      "skku.edu":     "#0B8A3B",            // SKKU green
+      "sejong.ac.kr": "#B91C1C",            // Sejong deep red
+      "outta.ai":     "#111827",            // OUTTA dark gray
+      "dbpia.co.kr":  "#C81E1E"
+    };
+
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    function hexToRgb(hex) {
+      const h = hex.replace('#','');
+      const bigint = parseInt(h.length === 3 ? h.split('').map(c=>c+c).join('') : h, 16);
+      return { r: (bigint>>16)&255, g: (bigint>>8)&255, b: bigint&255 };
+    }
+    function rgbToHex({r,g,b}) {
+      const to = v => v.toString(16).padStart(2,'0');
+      return `#${to(r)}${to(g)}${to(b)}`;
+    }
+    function lighten(hex, amount = 0.5) { // 0~1
+      const {r,g,b} = hexToRgb(hex);
+      const L = (c) => Math.round(c + (255 - c) * amount);
+      return rgbToHex({ r: L(r), g: L(g), b: L(b) });
+    }
+    function isTooDark(hex) {
+      const {r,g,b} = hexToRgb(hex);
+      const luminance = (0.2126*(r/255)) + (0.7152*(g/255)) + (0.0722*(b/255));
+      return luminance < 0.35;
+    }
+    function pickBrandColor(host) {
+      const h = host.replace(/^www\./,'');
+      for (const key of Object.keys(BRAND_COLORS)) {
+        if (h === key || h.endsWith(`.${key}`)) return BRAND_COLORS[key];
+      }
+      return null;
+    }
+
+    document.querySelectorAll('a[href^="http"]').forEach(a => {
+      try {
+        const u = new URL(a.href);
+        const brand = pickBrandColor(u.hostname);
+        if (!brand) return;
+
+        const finalColor = (prefersDark && isTooDark(brand)) ? lighten(brand, 0.55) : brand;
+
+        a.style.setProperty('--brand', finalColor);
+        a.classList.add('brand-link');
+      } catch (e) { /* ignore malformed hrefs */ }
+    });
+  })();
   </script>
 
   <!-- JSON-LD for richer search results -->
