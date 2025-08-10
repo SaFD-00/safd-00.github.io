@@ -1,19 +1,29 @@
 <!doctype html>
 <html lang="ko">
 <head>
+  <!--
+    ✅ 목적: 간결한 원페이지 CV
+    - 불필요/미사용 코드 제거, 다크모드 색상 버그 수정, 메타데이터 보정
+    - 각 블록에 자세한 주석 추가
+  -->
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="color-scheme" content="light dark" />
 
   <title>Seungwoo Baek</title>
-  <meta name="description" content="Seungwoo Baek" />
+  <meta name="description" content="bsw8369@g.skku.edu" />
 
   <!-- Open Graph: 공유 미리보기용. 실제 배포 URL/이미지로 업데이트하세요. -->
   <meta property="og:title" content="Seungwoo Baek" />
-  <meta property="og:description" content="Seungwoo Baek" />
+  <meta property="og:description" content="bsw8369@g.skku.edu" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://safd-00.github.io/" />
-  <meta property="og:image" content="/og-image.png" />
+  <meta property="og:image" content="https://safd-00.github.io/img/ID-photo.jpg" />
+  <meta property="og:image:alt" content="Seungwoo Baek" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Seungwoo Baek" />
+  <meta name="twitter:description" content="bsw8369@g.skku.edu" />
+  <meta name="twitter:image" content="https://safd-00.github.io/img/ID-photo.jpg" />
 
   <link rel="icon" href="/favicon.ico" />
 
@@ -185,7 +195,7 @@
   <!-- 헤더: 왼쪽 사진 + 오른쪽 텍스트/링크 -->
   <header class="hero container" id="main">
     <!-- CLS 방지를 위해 width/height 지정, 즉시 렌더를 위해 loading="eager" -->
-    <img src="/photo.jpg" alt="Seungwoo Baek" class="profile-pic" width="140" height="180" decoding="async" loading="eager" />
+    <img src="/img/ID-photo.jpg" alt="Seungwoo Baek" class="profile-pic" width="140" height="180" decoding="async" loading="eager" />
     <div class="hero-right">
       <h1 class="name">Seungwoo Baek</h1>
       <div class="chipbar" aria-label="빠른 링크">
