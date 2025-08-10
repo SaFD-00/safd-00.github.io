@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>홍길동 — CV</title>
+  <meta name="description" content="홍길동의 이력서와 프로젝트, 연구 실적을 소개하는 간결하고 시원한 원페이지 CV." />
+  <meta property="og:title" content="홍길동 — CV" />
+  <meta property="og:description" content="간결하고 시원한 원페이지 CV" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://username.github.io/" />
+  <meta property="og:image" content="https://username.github.io/og-image.png" />
+  <link rel="icon" href="favicon.ico" />
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #0f172a; /* slate-900 */
+      --muted: #475569; /* slate-600 */
+      --card: #f8fafc;  /* slate-50 */
+      --accent: #2563eb; /* blue-600 */
+      --accent-2: #0ea5e9; /* sky-500 */
+      --border: #e2e8f0; /* slate-200 */
+      --maxw: 960px;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0b1220;
+        --text: #e5e7eb;
+        --muted: #94a3b8;
+        --card: #0f172a;
+        --accent: #60a5fa;
+        --accent-2: #38bdf8;
+        --border: #1f2937;
+      }
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
+      color: var(--text);
+      background: linear-gradient(180deg, var(--bg), var(--card));
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+    .container { max-width: var(--maxw); margin: 0 auto; padding: 24px; }
+    header.hero { padding: 72px 0 24px; }
+    .name { font-size: clamp(32px, 6vw, 56px); font-weight: 800; letter-spacing: -0.02em; margin: 0 0 8px; }
+    .tagline { font-size: clamp(16px, 2.4vw, 20px); color: var(--muted); margin: 0 0 20px; }
+    .chipbar { display: flex; flex-wrap: wrap; gap: 10px; margin: 20px 0 8px; }
+    .chipbar a { text-decoration: none; color: var(--text); border: 1px solid var(--border); background: #fff3; padding: 8px 12px; border-radius: 999px; display: inline-flex; align-items: center; gap: 8px; }
+    .chipbar a:hover { border-color: var(--accent); box-shadow: 0 4px 14px rgba(37,99,235,.18); transform: translateY(-1px); transition: .2s; }
+    nav.topnav { position: sticky; top: 0; backdrop-filter: saturate(180%) blur(8px); background: color-mix(in oklab, var(--bg) 85%, transparent); border-bottom: 1px solid var(--border); z-index: 50; }
+    nav.topnav .container { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .nav-brand { font-weight: 700; letter-spacing: -0.01em; }
+    .nav-links { display: flex; gap: 14px; flex-wrap: wrap; }
+    .nav-links a { color: var(--muted); text-decoration: none; padding: 12px 6px; }
+    .nav-links a:hover { color: var(--accent); }
+    section { padding: 56px 0; }
+    section h2 { font-size: clamp(22px, 3vw, 28px); margin: 0 0 20px; letter-spacing: -0.01em; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 20px; }
+    .grid { display: grid; gap: 16px; }
+    .grid.two { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    .grid.three { grid-template-columns: repeat(3, minmax(0,1fr)); }
+    @media (max-width: 860px) { .grid.two, .grid.three { grid-template-columns: 1fr; } }
+    .item h3 { margin: 0 0 6px; font-size: 18px; }
+    .item .meta { color: var(--muted); font-size: 14px; }
+    .pill { display:inline-block; border:1px solid var(--border); padding:2px 8px; border-radius:999px; font-size:12px; color:var(--muted); }
+    ul.clean { list-style: none; padding: 0; margin: 0; }
+    ul.clean li { padding: 10px 0; border-bottom: 1px dashed var(--border); }
+    ul.clean li:last-child { border-bottom: 0; }
+    footer { padding: 40px 0 80px; color: var(--muted); font-size: 14px; text-align: center; }
+    .btn { display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:12px; border:1px solid var(--border); text-decoration:none; color:var(--text); }
+    .btn.primary { background: linear-gradient(90deg, var(--accent), var(--accent-2)); color: white; border: none; }
+    .btn:hover { transform: translateY(-1px); box-shadow: 0 8px 18px rgba(0,0,0,.08); transition: .2s; }
+    .row { display:flex; gap:16px; flex-wrap:wrap; align-items:center; }
+    .spacer { height: 16px; }
+    .sr { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+    /* Print for PDF */
+    @media print {
+      nav.topnav, .btn-print { display: none !important; }
+      .container { max-width: 900px; padding: 0; }
+      section { padding: 18px 0; }
+      .card { border: none; background: transparent; padding: 0; }
+      a { color: black; text-decoration: none; }
+      .name { font-size: 28px; }
+    }
+  </style>
+</head>
+<body>
+  <a href="#main" class="sr">본문으로 건너뛰기</a>
+  <nav class="topnav" aria-label="주요 탐색">
+    <div class="container">
+      <div class="nav-brand">홍길동</div>
+      <div class="nav-links">
+        <a href="#about">About</a>
+        <a href="#experience">Experience</a>
+        <a href="#projects">Projects</a>
+        <a href="#publications">Publications</a>
+        <a href="#education">Education</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero container" id="main">
+    <h1 class="name">홍길동</h1>
+    <p class="tagline">AI · Mobile Systems · HCI — 복잡한 문제를 단순하게, 사용자에게 가치를 빠르게.</p>
+    <div class="chipbar" aria-label="빠른 링크">
+      <a href="mailto:your.name@email.com" aria-label="이메일">✉️ <span>이메일</span></a>
+      <a href="https://github.com/your-github" target="_blank" rel="noopener">💻 <span>GitHub</span></a>
+      <a href="https://scholar.google.com/" target="_blank" rel="noopener">📚 <span>Google Scholar</span></a>
+      <a href="#" class="btn btn-print">🖨️ <span>PDF로 저장</span></a>
+    </div>
+  </header>
+
+  <main class="container">
+    <section id="about">
+      <h2>About</h2>
+      <div class="card">
+        <p>
+          모바일 에이전트와 사용자 행동 기반 자동화에 관심이 많은 연구자/엔지니어입니다. 모델을 실제 제품에 적용해
+          <strong>측정 가능한 임팩트</strong>를 만드는 데 집중합니다. 현재 관심사는 <em>모바일 LLM, PBD(Programming by Demonstration),
+          멀티에이전트 협력</em>입니다.
+        </p>
+        <div class="spacer"></div>
+        <div class="row">
+          <span class="pill">서울, 대한민국</span>
+          <span class="pill">오픈소스 기여</span>
+          <span class="pill">영어 · 한국어</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="experience">
+      <h2>Experience</h2>
+      <div class="grid two">
+        <article class="card item">
+          <h3>Research Engineer · ACME AI</h3>
+          <div class="meta">2023 — 현재 · 서울</div>
+          <ul>
+            <li>모바일 LLM 기반 개인 비서 앱의 에이전트 런타임 설계 및 성능 최적화</li>
+            <li>온디바이스 추론 파이프라인 구축, 95p 지연시간 40% 감소</li>
+            <li>사용자 행동 시뮬레이션으로 회귀 테스트 자동화</li>
+          </ul>
+        </article>
+        <article class="card item">
+          <h3>Research Intern · CMU</h3>
+          <div class="meta">2022 — 2023 · 피츠버그</div>
+          <ul>
+            <li>스마트폰 UI 시퀀스에서의 PBD(시연 기반) 정책 학습</li>
+            <li>모바일 상호작용 벤치마크 제작 및 공개</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="projects">
+      <h2>Projects</h2>
+      <div class="grid two">
+        <article class="card item">
+          <h3>MobileGPT</h3>
+          <div class="meta">온디바이스 GPT로 수행하는 모바일 자동화</div>
+          <ul>
+            <li>디바이스 내 TTS/STT + 동작 제어 연동</li>
+            <li>이슈: 성능 vs 배터리 — 동적 온디바이스/클라우드 라우팅</li>
+            <li><a href="https://github.com/your-github/mobilegpt" target="_blank" rel="noopener">GitHub</a></li>
+          </ul>
+        </article>
+        <article class="card item">
+          <h3>SUGILITE-based PBD Agent</h3>
+          <div class="meta">사용자 시연에서 태스크 스크립트 학습</div>
+          <ul>
+            <li>데몬스트레이션 → 추상화 → 재사용 파이프라인 구현</li>
+            <li>다양한 앱에서 80%+ 성공률</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="publications">
+      <h2>Publications</h2>
+      <div class="card">
+        <ul class="clean">
+          <li>
+            <strong>Title of Paper</strong> — Conference, 2024.
+            <span class="meta">with A. Coauthor, B. Coauthor</span>
+            · <a href="#">PDF</a> · <a href="#">Code</a> · <a href="#">BibTeX</a>
+          </li>
+          <li>
+            <strong>Another Paper</strong> — Journal, 2023.
+            <span class="meta">with Someone</span>
+            · <a href="#">PDF</a>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="education">
+      <h2>Education</h2>
+      <div class="grid two">
+        <div class="card item">
+          <h3>성균관대학교</h3>
+          <div class="meta">학사 · 소프트웨어학과 · 2018 — 2024</div>
+          <p>데이터 분석, 모바일 시스템, HCI 트랙</p>
+        </div>
+        <div class="card item">
+          <h3>Online / 기타</h3>
+          <div class="meta">Coursera · Fast.ai · 기타</div>
+          <p>ML, 딥러닝, 시스템 디자인</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <h2>Contact</h2>
+      <div class="card">
+        <p>협업/채용/연구 관련 문의는 언제든 환영합니다.</p>
+        <div class="row">
+          <a class="btn" href="mailto:your.name@email.com">✉️ 이메일</a>
+          <a class="btn" href="https://github.com/your-github" target="_blank" rel="noopener">GitHub</a>
+          <a class="btn" href="https://www.linkedin.com/in/your-linkedin/" target="_blank" rel="noopener">LinkedIn</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      © <span id="y"></span> 홍길동 · Built on GitHub Pages
+    </div>
+  </footer>
+
+  <script>
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const id = a.getAttribute('href');
+        if (id.length > 1) {
+          const el = document.querySelector(id);
+          if (el) {
+            e.preventDefault();
+            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }
+      });
+    });
+    // Footer year
+    document.getElementById('y').textContent = new Date().getFullYear();
+    // Print button
+    document.querySelectorAll('.btn-print').forEach(btn => btn.addEventListener('click', e => { e.preventDefault(); window.print(); }));
+  </script>
+
+  <!-- JSON-LD for richer search results -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "홍길동",
+    "url": "https://username.github.io/",
+    "email": "your.name@email.com",
+    "sameAs": [
+      "https://github.com/your-github",
+      "https://scholar.google.com/citations?user=YOUR_ID",
+      "https://www.linkedin.com/in/your-linkedin/"
+    ],
+    "jobTitle": "Research Engineer",
+    "address": { "@type": "PostalAddress", "addressLocality": "Seoul", "addressCountry": "KR" }
+  }
+  </script>
+</body>
+</html>
