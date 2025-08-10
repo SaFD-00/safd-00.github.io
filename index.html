@@ -177,7 +177,8 @@
       <div class="nav-links">
         <a href="#about">About</a>
         <a href="#experience">Experience</a>
-        <a href="#publications">Publications</a>
+        $1
+        <a href="#awards">Awards</a>
         <a href="#education">Education</a>
         <a href="#contact">Contact</a>
       </div>
@@ -270,20 +271,21 @@
     </section>
 
     <!-- Publications -->
-    <section id="publications">
-      <h2>Publications</h2>
+    $1
+
+    <!-- Awards -->
+    <section id="awards">
+      <h2>Awards</h2>
       <div class="card">
         <ul class="clean">
-          <li>
-            <strong>[1]</strong>
-            <a href="https://www.dbpia.co.kr/journal/articleDetail?nodeId=NODE12057944" target="_blank" rel="noopener noreferrer">Towards Light-weight, Ophthalmology-specialized Vision-language Models via Synthesized Diagnostic Rationales</a>.
-            <span class="meta"><strong>Seungwoo Baek</strong>, Kai Tzu-iunn Ong, Jiu Kim, Junwon Seo, Jinyeong Yeo, Eunyeong Choi. 2025.</span>
-          </li>
+          <li><strong>3rd Prize</strong>, Sejong AI Challenge <span class="meta">2024.12</span></li>
+          <li><strong>4th Prize</strong>, INISW Academy Performance Presentations <span class="meta">2023.06</span></li>
+          <li><strong>1st Prize</strong>, The Korea Economic Daily AI Idea Contest <span class="meta">2023.05</span></li>
         </ul>
       </div>
     </section>
 
-    <!-- Contact -->
+    $2
     <section id="contact">
       <h2>Contact</h2>
       <div class="card">
@@ -337,10 +339,14 @@
       "github.com":   "#24292F",
       "skku.edu":     "#0A66C2",
       "sejong.ac.kr": "#0A66C2",
-      "sites.google.com/view/fclab-skku":  "#0A66C2",
       "outta.ai":     "#0A66C2",
       "dbpia.co.kr":  "#0A66C2"
     };
+
+    // 특정 경로에만 색을 적용해야 하는 경우(예: FCLab: sites.google.com/view/fclab-skku)
+    const BRAND_PATH_COLORS = [
+      { host: "sites.google.com", pathPrefix: "/view/fclab-skku", color: "#0A66C2" }
+    ];
 
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
@@ -364,10 +370,18 @@
       const luminance = (0.2126*(r/255)) + (0.7152*(g/255)) + (0.0722*(b/255));
       return luminance < 0.35;
     }
-    function pickBrandColor(host) {
-      const h = host.replace(/^www\./,'');
+    function pickBrandColor(u) {
+      const h = u.hostname.replace(/^www\./,'');
+      // 1) 호스트 기반 매칭
       for (const key of Object.keys(BRAND_COLORS)) {
         if (h === key || h.endsWith(`.${key}`)) return BRAND_COLORS[key];
+      }
+      // 2) 경로 기반 매칭 (예: sites.google.com/view/fclab-skku)
+      for (const rule of BRAND_PATH_COLORS) {
+        if (h === rule.host && u.pathname.startsWith(rule.pathPrefix)) return rule.color;
+      }
+      return null;
+    }`)) return BRAND_COLORS[key];
       }
       return null;
     }
@@ -375,7 +389,7 @@
     document.querySelectorAll('a[href^="http"]').forEach(a => {
       try {
         const u = new URL(a.href);
-        const brand = pickBrandColor(u.hostname);
+        const brand = pickBrandColor(u);
         if (!brand) return;
 
         const finalColor = (prefersDark && isTooDark(brand)) ? lighten(brand, 0.55) : brand;
