@@ -1,216 +1,302 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+  <!-- ==================== 기본 메타 정보 ==================== -->
+  <!-- 문자 인코딩: UTF-8로 한국어/영어 등 다국어 지원 -->
   <meta charset="utf-8" />
+  <!-- 반응형 뷰포트 설정: 모바일 기기에서 화면 너비에 맞춰 렌더링 -->
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- 브라우저 탭에 표시되는 페이지 제목 -->
   <title>Seungwoo Baek</title>
+  <!-- 검색 엔진 결과에 표시되는 페이지 설명 (SEO) -->
   <meta name="description" content="AI Researcher — GUI Agents, Multi-step Reasoning, Self-play" />
 
-  <!-- Open Graph -->
+  <!-- ==================== Open Graph 메타 태그 ==================== -->
+  <!-- SNS(Facebook, KakaoTalk 등)에서 링크 공유 시 표시되는 미리보기 정보 -->
   <meta property="og:title" content="Seungwoo Baek" />
   <meta property="og:description" content="AI Researcher at Sungkyunkwan University" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://safd-00.github.io/" />
+  <!-- 공유 시 표시될 대표 이미지 (증명사진) -->
   <meta property="og:image" content="img/ID-photo.jpg" />
+  <!-- Twitter(X) 카드: 큰 이미지 형태로 미리보기 표시 -->
   <meta name="twitter:card" content="summary_large_image" />
 
+  <!-- 파비콘: 브라우저 탭의 작은 아이콘 -->
   <link rel="icon" href="/favicon.ico" />
 
-  <!-- Fonts: Lora (body) + Open Sans (headings) — matching noambrown.github.io -->
+  <!-- ==================== 웹 폰트 로드 ==================== -->
+  <!-- Google Fonts 서버에 미리 연결(preconnect)하여 폰트 로딩 속도 향상 -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <!--
+    사용 폰트:
+    - Lora (세리프): 본문 텍스트용 — 가독성이 좋은 세리프 서체
+    - Open Sans (산세리프): 제목/네비게이션용 — 깔끔하고 현대적인 느낌
+    display=swap: 폰트 로딩 전에 시스템 폰트를 먼저 표시하여 FOIT(텍스트 깜빡임) 방지
+  -->
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
 
   <style>
-    /* ========== Design Tokens ========== */
+    /* ==========================================================================
+       디자인 토큰 (Design Tokens)
+       --------------------------------------------------------------------------
+       사이트 전체에서 사용되는 색상, 폰트, 간격 등의 값을 CSS 변수로 정의합니다.
+       이 값만 변경하면 사이트 전체 테마를 일괄 수정할 수 있어 유지보수가 용이합니다.
+       ========================================================================== */
     :root {
-      --bg: #FAFAFA;
-      --surface: #FFFFFF;
-      --text: #404040;
-      --text-secondary: #606060;
-      --text-tertiary: #808080;
-      --link: #0085A1;
-      --link-hover: #00657d;
-      --accent: #404040;
-      --accent-hover: #606060;
-      --border: #EBEBEB;
-      --border-light: #F2F2F2;
-      --radius: 2px;
-      --font-display: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      --font-body: 'Lora', 'Times New Roman', serif;
-      --max-w: 720px;
-      --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      /* --- 배경 색상 --- */
+      --bg: #FAFAFA;            /* 페이지 전체 배경 (아주 밝은 회색) */
+      --surface: #FFFFFF;       /* 카드/요소 표면 배경 (순백) */
+
+      /* --- 텍스트 색상 (3단계 위계) --- */
+      --text: #404040;          /* 기본 텍스트 (가장 진한 색, 제목·본문) */
+      --text-secondary: #606060;/* 보조 텍스트 (설명·부연) */
+      --text-tertiary: #808080; /* 3차 텍스트 (날짜·메타 정보 등 가장 연한 색) */
+
+      /* --- 링크 색상 --- */
+      --link: #0085A1;          /* 기본 링크 색상 (청록색) */
+      --link-hover: #00657d;    /* 링크 호버 시 색상 (더 진한 청록) */
+
+      /* --- 강조 색상 --- */
+      --accent: #404040;        /* 강조 요소 기본색 */
+      --accent-hover: #606060;  /* 강조 요소 호버색 */
+
+      /* --- 테두리 색상 --- */
+      --border: #EBEBEB;        /* 섹션 구분선 등 기본 테두리 */
+      --border-light: #F2F2F2;  /* 리스트 항목 사이 등 연한 구분선 */
+
+      /* --- 기타 --- */
+      --radius: 2px;            /* 둥근 모서리 반경 (최소한의 라운딩) */
+      --font-display: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; /* 제목용 산세리프 폰트 */
+      --font-body: 'Lora', 'Times New Roman', serif;  /* 본문용 세리프 폰트 */
+      --max-w: 720px;           /* 콘텐츠 최대 너비 (가독성을 위해 제한) */
+      --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1); /* 애니메이션 전환 시간 및 이징 곡선 */
     }
 
-    /* ========== Reset & Base ========== */
+    /* ==========================================================================
+       리셋 & 기본 스타일
+       --------------------------------------------------------------------------
+       브라우저마다 다른 기본 스타일을 초기화하고, 사이트 전체의 기본 타이포그래피를 설정합니다.
+       ========================================================================== */
+    /* 모든 요소의 box-sizing을 border-box로 통일 (패딩·테두리가 너비에 포함) */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     html {
-      scroll-behavior: smooth;
-      -webkit-font-smoothing: antialiased;
-      text-rendering: optimizeLegibility;
+      scroll-behavior: smooth;             /* 앵커 링크 클릭 시 부드럽게 스크롤 */
+      -webkit-font-smoothing: antialiased; /* macOS/iOS에서 폰트 렌더링 부드럽게 */
+      text-rendering: optimizeLegibility;  /* 글자 간격·합자 최적화 */
     }
 
     body {
-      font-family: var(--font-body);
-      color: var(--text);
-      background: var(--bg);
-      line-height: 1.7;
-      font-size: 15px;
+      font-family: var(--font-body);  /* Lora 세리프 폰트 적용 */
+      color: var(--text);             /* 기본 텍스트 색상 */
+      background: var(--bg);          /* 페이지 배경색 */
+      line-height: 1.7;              /* 줄 간격 (본문 가독성 확보) */
+      font-size: 15px;               /* 기본 폰트 크기 */
     }
 
+    /* 텍스트 드래그(선택) 시 색상: 어두운 배경에 흰 글씨 */
     ::selection {
       background: var(--text);
       color: var(--surface);
     }
 
+    /* 링크 기본 스타일: 밑줄 없이, 호버 시 밑줄 표시 */
     a { color: var(--link); text-decoration: none; }
     a:hover { color: var(--link-hover); text-decoration: underline; }
+    /* 이미지: block 요소로 만들어 하단 여백 제거, 부모 너비 초과 방지 */
     img { display: block; max-width: 100%; }
 
-    /* ========== Layout ========== */
+    /* ==========================================================================
+       레이아웃 래퍼
+       --------------------------------------------------------------------------
+       콘텐츠를 최대 720px 너비로 중앙 정렬하는 컨테이너입니다.
+       모든 섹션이 이 래퍼 안에 들어가 일관된 여백을 유지합니다.
+       ========================================================================== */
     .wrap {
-      max-width: var(--max-w);
-      margin: 0 auto;
-      padding: 0 24px;
+      max-width: var(--max-w);  /* 최대 720px */
+      margin: 0 auto;          /* 좌우 자동 마진으로 중앙 정렬 */
+      padding: 0 24px;         /* 좌우 패딩 (모바일에서 화면 가장자리 여백) */
     }
 
-    /* ========== Navigation ========== */
+    /* ==========================================================================
+       네비게이션 바
+       --------------------------------------------------------------------------
+       상단에 고정(sticky)되어 스크롤 시에도 항상 보이는 네비게이션입니다.
+       반투명 배경 + blur 효과로 콘텐츠가 뒤에서 어렴풋이 비치는 유리 효과(glassmorphism)를 구현합니다.
+       ========================================================================== */
     nav {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: rgba(250, 250, 250, 0.85);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border-light);
+      position: sticky;       /* 스크롤 시 상단에 고정 */
+      top: 0;                 /* 화면 최상단에 붙임 */
+      z-index: 100;           /* 다른 요소 위에 표시 (겹침 순서) */
+      background: rgba(250, 250, 250, 0.85); /* 85% 불투명 배경 */
+      backdrop-filter: blur(12px);           /* 뒤 콘텐츠를 12px 흐리게 (유리 효과) */
+      -webkit-backdrop-filter: blur(12px);   /* Safari 호환 */
+      border-bottom: 1px solid var(--border-light); /* 하단 구분선 */
     }
 
+    /* 네비게이션 내부 레이아웃: 이름(좌) | 링크들(우) 배치 */
     nav .wrap {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 56px;
+      align-items: center;           /* 세로 중앙 정렬 */
+      justify-content: space-between;/* 양 끝 정렬 */
+      height: 56px;                  /* 네비게이션 높이 고정 */
     }
 
+    /* 네비게이션 좌측 이름 */
     .nav-name {
-      font-family: var(--font-display);
+      font-family: var(--font-display); /* Open Sans 산세리프 */
       font-size: 16px;
-      font-weight: 700;
-      letter-spacing: -0.01em;
+      font-weight: 700;                /* 굵게 */
+      letter-spacing: -0.01em;         /* 글자 간격 약간 좁힘 */
       color: var(--text);
     }
 
+    /* 네비게이션 우측 링크 그룹 */
     .nav-links {
       display: flex;
-      gap: 24px;
+      gap: 24px;  /* 링크 사이 간격 */
     }
 
+    /* 네비게이션 개별 링크 스타일 */
     .nav-links a {
       font-size: 13px;
-      color: var(--text-tertiary);
-      letter-spacing: 0.02em;
-      transition: color var(--transition);
-      text-decoration: none;
+      color: var(--text-tertiary);          /* 연한 회색 (비활성 느낌) */
+      letter-spacing: 0.02em;              /* 약간 넓은 글자 간격 */
+      transition: color var(--transition); /* 색상 전환 애니메이션 */
+      text-decoration: none;               /* 밑줄 제거 */
     }
 
+    /* 네비게이션 링크 호버: 진한 색으로 변경 */
     .nav-links a:hover {
       color: var(--text);
       text-decoration: none;
     }
 
+    /* 모바일 반응형 (화면 너비 600px 이하) */
     @media (max-width: 600px) {
-      .nav-links { gap: 14px; }
-      .nav-links a { font-size: 12px; }
+      .nav-links { gap: 14px; }       /* 링크 간격 축소 */
+      .nav-links a { font-size: 12px; } /* 폰트 크기 축소 */
     }
 
-    /* ========== Hero / Header ========== */
+    /* ==========================================================================
+       히어로 섹션 (페이지 최상단 프로필 영역)
+       --------------------------------------------------------------------------
+       사진 + 이름 + 외부 링크로 구성된 첫인상 영역입니다.
+       방문자가 가장 먼저 보게 되는 영역이므로 넉넉한 상단 패딩을 줍니다.
+       ========================================================================== */
     .hero {
-      padding: 80px 0 0;
+      padding: 80px 0 0; /* 상단 80px 여백으로 네비게이션과 간격 확보 */
     }
 
+    /* 히어로 내부: 사진(좌) + 텍스트(우) 가로 배치 */
     .hero-inner {
       display: flex;
-      align-items: flex-start;
-      gap: 40px;
+      align-items: flex-start; /* 상단 정렬 */
+      gap: 40px;               /* 사진과 텍스트 사이 간격 */
     }
 
+    /* 프로필 사진 */
     .hero-photo {
       width: 130px;
       height: 168px;
-      object-fit: cover;
-      border-radius: var(--radius);
-      flex-shrink: 0;
-      filter: grayscale(15%);
+      object-fit: cover;              /* 비율 유지하면서 영역 채움 (초과분 잘림) */
+      border-radius: var(--radius);   /* 살짝 둥근 모서리 */
+      flex-shrink: 0;                 /* 화면 줄어도 사진 크기 유지 */
+      filter: grayscale(15%);         /* 15% 흑백 필터 (약간 차분한 톤) */
     }
 
-    .hero-text { flex: 1; min-width: 0; }
+    /* 히어로 텍스트 영역: 남은 공간 모두 차지 */
+    .hero-text { flex: 1; min-width: 0; } /* min-width:0은 flex 자식의 오버플로 방지 */
 
+    /* 이름 (대형 제목) */
     .hero-text h1 {
       font-family: var(--font-display);
+      /*
+        clamp(최소값, 선호값, 최대값):
+        - 최소 32px, 뷰포트 너비의 5%, 최대 44px
+        - 화면 크기에 따라 자동으로 폰트 크기가 유동적으로 변함
+      */
       font-size: clamp(32px, 5vw, 44px);
       font-weight: 700;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.02em; /* 대형 텍스트의 글자 간격을 좁혀 밀도감 부여 */
       line-height: 1.15;
       margin-bottom: 16px;
       color: var(--text);
     }
 
+    /* 외부 링크 그룹 (Email, LinkedIn, GitHub, Blog) */
     .hero-links {
       display: flex;
-      gap: 16px;
-      flex-wrap: wrap;
+      gap: 16px;        /* 링크 간격 */
+      flex-wrap: wrap;  /* 공간 부족 시 다음 줄로 줄바꿈 */
       margin-top: 20px;
     }
 
+    /* 개별 외부 링크: 호버 시 밑줄이 나타나는 인터랙션 */
     .hero-links a {
       font-family: var(--font-body);
       font-size: 14px;
       color: var(--link);
       padding-bottom: 1px;
-      border-bottom: 1px solid transparent;
+      border-bottom: 1px solid transparent; /* 기본: 투명 밑줄 (공간만 확보) */
       transition: all var(--transition);
       letter-spacing: 0.01em;
       text-decoration: none;
     }
 
+    /* 호버 시 투명 밑줄이 링크 색상으로 나타남 */
     .hero-links a:hover {
       border-bottom-color: var(--link);
       text-decoration: none;
     }
 
+    /* 모바일 반응형: 가로 배치 → 세로 배치, 사진 크기 축소 */
     @media (max-width: 600px) {
-      .hero { padding: 48px 0 0; }
-      .hero-inner { flex-direction: column; gap: 24px; }
-      .hero-photo { width: 100px; height: 130px; }
+      .hero { padding: 48px 0 0; }                        /* 상단 여백 축소 */
+      .hero-inner { flex-direction: column; gap: 24px; }   /* 세로 배치로 전환 */
+      .hero-photo { width: 100px; height: 130px; }         /* 사진 크기 축소 */
     }
 
-    /* ========== Sections ========== */
+    /* ==========================================================================
+       공통 섹션 스타일
+       --------------------------------------------------------------------------
+       About, Education, Experience 등 모든 <section>에 적용되는 기본 스타일입니다.
+       각 섹션 간 상단 64px 여백으로 시각적 구분을 만듭니다.
+       ========================================================================== */
     section {
-      padding: 64px 0 0;
+      padding: 64px 0 0; /* 섹션 간 상단 여백 */
     }
 
+    /* 섹션 제목 (h2): 하단 테두리선으로 제목과 콘텐츠를 시각적으로 구분 */
     section h2 {
       font-family: var(--font-display);
-      font-size: clamp(22px, 3vw, 28px);
+      font-size: clamp(22px, 3vw, 28px); /* 유동적 폰트 크기: 22~28px */
       font-weight: 700;
       letter-spacing: -0.01em;
       margin-bottom: 28px;
       padding-bottom: 12px;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid var(--border); /* 제목 아래 구분선 */
       color: var(--text);
     }
 
-    /* ========== About ========== */
+    /* ==========================================================================
+       About 섹션 (자기소개)
+       --------------------------------------------------------------------------
+       자기소개 문단과 태그(키워드) 스타일입니다.
+       ========================================================================== */
     .about-text p {
-      color: var(--text-secondary);
+      color: var(--text-secondary); /* 보조 텍스트 색상 (본문보다 약간 연함) */
       margin-bottom: 16px;
       font-size: 15px;
-      line-height: 1.8;
+      line-height: 1.8;            /* 넉넉한 줄 간격으로 가독성 확보 */
     }
 
+    /* 마지막 문단은 하단 여백 제거 */
     .about-text p:last-of-type { margin-bottom: 0; }
 
+    /* 강조 텍스트 (<strong>): 기본 텍스트 색으로 돌아와서 시각적 강조 */
     .about-text strong {
       color: var(--text);
       font-weight: 600;
@@ -220,6 +306,7 @@
       color: var(--link);
     }
 
+    /* 태그(키워드) 컨테이너: 가로 나열, 줄바꿈 허용 */
     .tags {
       display: flex;
       gap: 8px;
@@ -227,38 +314,49 @@
       margin-top: 20px;
     }
 
+    /* 개별 태그: 둥근 알약(pill) 형태의 뱃지 */
     .tag {
       font-size: 12px;
       color: var(--text-tertiary);
       border: 1px solid var(--border);
       padding: 4px 12px;
-      border-radius: 999px;
+      border-radius: 999px;    /* 완전한 둥근 모서리 (알약 형태) */
       letter-spacing: 0.02em;
     }
 
-    /* ========== Grid Items (Education, Experience) ========== */
+    /* ==========================================================================
+       그리드 항목 (Education, Experience 섹션 공통)
+       --------------------------------------------------------------------------
+       학력·경력 항목을 [날짜 | 내용] 2열 그리드로 표시합니다.
+       CSS Grid를 사용하여 날짜 컬럼(140px 고정) + 내용 컬럼(나머지)을 배치합니다.
+       ========================================================================== */
+    /* 항목 목록 컨테이너: 세로 나열, 간격 없음 (border로 구분) */
     .entries {
       display: flex;
       flex-direction: column;
       gap: 0;
     }
 
+    /* 개별 항목: 2열 그리드 레이아웃 */
     .entry {
       display: grid;
-      grid-template-columns: 140px 1fr;
-      gap: 24px;
-      padding: 20px 0;
-      border-bottom: 1px solid var(--border-light);
+      grid-template-columns: 140px 1fr; /* 날짜 140px 고정, 나머지 콘텐츠 */
+      gap: 24px;                        /* 열 사이 간격 */
+      padding: 20px 0;                  /* 상하 패딩 */
+      border-bottom: 1px solid var(--border-light); /* 항목 간 연한 구분선 */
     }
 
+    /* 마지막 항목은 구분선 제거 */
     .entry:last-child { border-bottom: none; }
 
+    /* 날짜 (왼쪽 열): 연한 회색, 작은 폰트 */
     .entry-date {
       font-size: 13px;
       color: var(--text-tertiary);
-      padding-top: 2px;
+      padding-top: 2px; /* 제목(h3)과 시각적 정렬 미세조정 */
     }
 
+    /* 항목 제목 (기관명/회사명) */
     .entry-content h3 {
       font-family: var(--font-display);
       font-size: 15px;
@@ -266,6 +364,7 @@
       margin-bottom: 4px;
     }
 
+    /* 제목 내 링크: 청록색, 호버 시 밑줄 */
     .entry-content h3 a {
       color: var(--link);
       transition: color var(--transition);
@@ -277,12 +376,14 @@
       text-decoration: underline;
     }
 
+    /* 메타 정보 (학위, 직함 등) */
     .entry-meta {
       font-size: 13px;
       color: var(--text-tertiary);
       line-height: 1.6;
     }
 
+    /* 상세 설명 */
     .entry-desc {
       font-size: 14px;
       color: var(--text-secondary);
@@ -290,30 +391,37 @@
       line-height: 1.7;
     }
 
+    /* 모바일 반응형: 2열 → 1열로 전환 (날짜와 내용이 세로 나열) */
     @media (max-width: 600px) {
       .entry {
-        grid-template-columns: 1fr;
-        gap: 4px;
+        grid-template-columns: 1fr; /* 단일 열로 변경 */
+        gap: 4px;                   /* 간격 축소 */
       }
     }
 
-    /* ========== Publications ========== */
+    /* ==========================================================================
+       Publications 섹션 (논문/출판물)
+       --------------------------------------------------------------------------
+       논문 제목(링크) + 저자 정보를 표시하는 리스트입니다.
+       list-style:none으로 기본 불릿을 제거하고 커스텀 스타일을 적용합니다.
+       ========================================================================== */
     .pub-list {
-      list-style: none;
+      list-style: none; /* 기본 불릿(●) 제거 */
     }
 
     .pub-list li {
       padding: 16px 0;
-      border-bottom: 1px solid var(--border-light);
+      border-bottom: 1px solid var(--border-light); /* 항목 간 연한 구분선 */
     }
 
-    .pub-list li:last-child { border-bottom: none; }
+    .pub-list li:last-child { border-bottom: none; } /* 마지막 항목 구분선 제거 */
 
+    /* 논문 제목: 링크 스타일, block으로 전체 행 클릭 가능 */
     .pub-title {
       font-size: 15px;
       font-weight: 500;
       line-height: 1.6;
-      display: block;
+      display: block;         /* block 요소로 만들어 전체 너비 차지 */
       margin-bottom: 4px;
       color: var(--link);
       transition: color var(--transition);
@@ -322,35 +430,42 @@
 
     .pub-title:hover { color: var(--link-hover); text-decoration: underline; }
 
+    /* 저자 목록: 작은 폰트, 연한 회색 */
     .pub-authors {
       font-size: 13px;
       color: var(--text-tertiary);
       line-height: 1.6;
     }
 
-    /* ========== Awards ========== */
+    /* ==========================================================================
+       Awards 섹션 (수상 경력)
+       --------------------------------------------------------------------------
+       수상 정보(좌) + 날짜(우)를 한 행에 배치합니다.
+       flex의 justify-content:space-between으로 양 끝 정렬합니다.
+       ========================================================================== */
     .award-list {
-      list-style: none;
+      list-style: none; /* 기본 불릿 제거 */
     }
 
     .award-list li {
       display: flex;
-      justify-content: space-between;
-      align-items: baseline;
+      justify-content: space-between; /* 수상 정보(좌) — 날짜(우) 양 끝 배치 */
+      align-items: baseline;          /* 텍스트 기준선(baseline) 정렬 */
       padding: 14px 0;
       border-bottom: 1px solid var(--border-light);
-      gap: 16px;
+      gap: 16px;                      /* 정보와 날짜 사이 최소 간격 */
     }
 
     .award-list li:last-child { border-bottom: none; }
 
+    /* 수상 정보 텍스트 */
     .award-info {
       font-size: 14px;
       line-height: 1.6;
     }
 
     .award-info strong {
-      font-weight: 600;
+      font-weight: 600; /* 수상 등급(1st, 2nd 등) 굵게 */
     }
 
     .award-info a {
@@ -362,25 +477,36 @@
       text-decoration: underline;
     }
 
+    /* 수상 날짜: 오른쪽 끝, 줄어들지 않음 */
     .award-date {
       font-size: 12px;
       color: var(--text-tertiary);
-      flex-shrink: 0;
+      flex-shrink: 0; /* 화면이 줄어도 날짜 텍스트 줄바꿈 방지 */
     }
 
-    /* ========== Contact ========== */
+    /* ==========================================================================
+       Contact 섹션 (연락처)
+       --------------------------------------------------------------------------
+       연락 안내 문구 + 버튼형 링크(Email, LinkedIn)를 표시합니다.
+       ========================================================================== */
     .contact-text {
       color: var(--text-secondary);
       font-size: 15px;
       margin-bottom: 20px;
     }
 
+    /* 연락처 버튼 그룹: 가로 나열 */
     .contact-links {
       display: flex;
       gap: 12px;
       flex-wrap: wrap;
     }
 
+    /*
+      연락처 버튼 스타일:
+      - 테두리가 있는 아웃라인 버튼 (ghost button)
+      - 호버 시 배경이 채워지는 인터랙션 (아웃라인 → 필드 전환)
+    */
     .contact-links a {
       font-size: 13px;
       font-weight: 500;
@@ -393,6 +519,7 @@
       text-decoration: none;
     }
 
+    /* 호버: 배경색이 링크 색으로 채워지고, 글씨가 흰색으로 반전 */
     .contact-links a:hover {
       background: var(--link);
       color: var(--surface);
@@ -400,28 +527,41 @@
       text-decoration: none;
     }
 
-    /* ========== Footer ========== */
+    /* ==========================================================================
+       푸터 (페이지 하단)
+       --------------------------------------------------------------------------
+       저작권 표시와 빌드 정보를 표시합니다.
+       ========================================================================== */
     footer {
-      margin-top: 80px;
+      margin-top: 80px;     /* 마지막 섹션과의 간격 */
       padding: 32px 0;
-      border-top: 1px solid var(--border-light);
+      border-top: 1px solid var(--border-light); /* 상단 구분선 */
       text-align: center;
       font-size: 12px;
       color: var(--text-tertiary);
       letter-spacing: 0.02em;
     }
 
-    /* ========== Fade-in Animation ========== */
+    /* ==========================================================================
+       페이드인 애니메이션
+       --------------------------------------------------------------------------
+       페이지 로드 시 각 섹션이 아래에서 위로 서서히 나타나는 효과입니다.
+       .fade-in 클래스가 적용된 요소에 순차적으로 발동합니다.
+       nth-child 선택자로 각 요소에 약간씩 다른 지연(delay)을 줘서
+       캐스케이드(순차적 등장) 효과를 만듭니다.
+       ========================================================================== */
     .fade-in {
-      opacity: 0;
-      transform: translateY(16px);
-      animation: fadeUp 0.6s ease forwards;
+      opacity: 0;                          /* 초기 상태: 투명 */
+      transform: translateY(16px);         /* 초기 상태: 16px 아래 위치 */
+      animation: fadeUp 0.6s ease forwards; /* 0.6초 동안 위로 올라오며 나타남 */
     }
 
+    /* 키프레임: 투명+아래 → 불투명+원위치 */
     @keyframes fadeUp {
       to { opacity: 1; transform: translateY(0); }
     }
 
+    /* 각 자식 요소별 애니메이션 지연 시간 (0.08초 간격으로 순차 등장) */
     .fade-in:nth-child(1) { animation-delay: 0s; }
     .fade-in:nth-child(2) { animation-delay: 0.08s; }
     .fade-in:nth-child(3) { animation-delay: 0.16s; }
@@ -430,26 +570,38 @@
     .fade-in:nth-child(6) { animation-delay: 0.40s; }
     .fade-in:nth-child(7) { animation-delay: 0.48s; }
 
-    /* ========== Print ========== */
+    /* ==========================================================================
+       인쇄 스타일 (@media print)
+       --------------------------------------------------------------------------
+       Ctrl+P로 페이지를 인쇄할 때 적용되는 스타일입니다.
+       불필요한 UI 요소를 숨기고, 여백을 줄여 종이에 최적화합니다.
+       ========================================================================== */
     @media print {
-      nav { display: none !important; }
-      body { background: white; font-size: 12px; }
-      section { padding: 16px 0 0; }
-      .hero { padding: 24px 0 0; }
-      footer { margin-top: 24px; }
-      .fade-in { opacity: 1; transform: none; animation: none; }
+      nav { display: none !important; }    /* 네비게이션 숨김 */
+      body { background: white; font-size: 12px; } /* 배경 흰색, 폰트 축소 */
+      section { padding: 16px 0 0; }       /* 섹션 간격 축소 */
+      .hero { padding: 24px 0 0; }         /* 히어로 여백 축소 */
+      footer { margin-top: 24px; }         /* 푸터 간격 축소 */
+      .fade-in { opacity: 1; transform: none; animation: none; } /* 애니메이션 비활성화 */
     }
   </style>
 </head>
 <body>
 
-  <!-- Skip Link -->
+  <!-- ==================== 스킵 링크 (접근성) ====================
+       화면 밖에 숨겨진 링크로, 키보드 사용자(Tab 키)나 스크린 리더 사용자가
+       네비게이션을 건너뛰고 바로 본문으로 이동할 수 있게 합니다.
+       WCAG 접근성 지침 준수를 위한 필수 요소입니다. -->
   <a href="#main" style="position:absolute;left:-9999px;">본문으로 건너뛰기</a>
 
-  <!-- Navigation -->
+  <!-- ==================== 네비게이션 바 ====================
+       상단 고정 네비게이션. aria-label로 스크린 리더에게 역할을 알려줍니다.
+       각 링크는 페이지 내 섹션(#about 등)으로의 앵커 링크입니다. -->
   <nav aria-label="주요 탐색">
     <div class="wrap">
+      <!-- 좌측: 사이트 소유자 이름 -->
       <div class="nav-name">Seungwoo Baek</div>
+      <!-- 우측: 섹션별 앵커 링크 목록 -->
       <div class="nav-links">
         <a href="#about">About</a>
         <a href="#education">Education</a>
@@ -461,10 +613,19 @@
     </div>
   </nav>
 
-  <!-- Hero -->
+  <!-- ==================== 히어로 섹션 (프로필 헤더) ====================
+       페이지 최상단의 대형 프로필 영역.
+       id="main"은 스킵 링크의 목적지이자 페이지의 주요 시작점입니다.
+       <header>로 마크업하여 시맨틱 HTML 구조를 갖춥니다. -->
   <header class="hero" id="main">
     <div class="wrap">
       <div class="hero-inner fade-in">
+        <!--
+          프로필 사진
+          - width/height: 레이아웃 시프트(CLS) 방지를 위해 크기 명시
+          - decoding="async": 이미지 디코딩을 메인 스레드에서 분리하여 렌더링 차단 방지
+          - loading="eager": 히어로 이미지는 즉시 로드 (lazy 대신 eager 사용)
+        -->
         <img
           src="/img/ID-photo.jpg"
           alt="Seungwoo Baek"
@@ -476,8 +637,16 @@
         />
         <div class="hero-text">
           <h1>Seungwoo Baek</h1>
+          <!-- 외부 프로필 링크들 -->
           <div class="hero-links">
+            <!-- mailto: 프로토콜로 이메일 클라이언트 실행 -->
             <a href="mailto:bsw8369@g.skku.edu">Email</a>
+            <!--
+              target="_blank": 새 탭에서 열기
+              rel="noopener noreferrer":
+                - noopener: 새 탭에서 window.opener 접근 차단 (보안)
+                - noreferrer: 리퍼러(출처) 정보 전송 방지 (프라이버시)
+            -->
             <a href="https://www.linkedin.com/in/name-seungwoo-baek/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
             <a href="https://github.com/SaFD-00" target="_blank" rel="noopener noreferrer">GitHub</a>
             <a href="https://bsw8369.tistory.com/" target="_blank" rel="noopener noreferrer">Blog</a>
@@ -487,36 +656,49 @@
     </div>
   </header>
 
+  <!-- ==================== 메인 콘텐츠 영역 ====================
+       <main>: 페이지의 핵심 콘텐츠를 감싸는 시맨틱 태그.
+       검색 엔진과 스크린 리더가 주요 콘텐츠 영역을 인식하는 데 사용합니다.
+       .wrap 클래스로 최대 너비 720px 중앙 정렬 적용. -->
   <main class="wrap">
 
-    <!-- About -->
+    <!-- ==================== About 섹션 (자기소개) ====================
+         자기소개 문단 + 키워드 태그로 구성.
+         <strong> 태그로 핵심 키워드를 시각적·의미적으로 강조합니다. -->
     <section id="about" class="fade-in">
       <h2>About</h2>
       <div class="about-text">
+        <!-- 첫 번째 문단: 소속과 연구 분야 소개 -->
         <p>
           I'm a Master's student in Artificial Intelligence at <strong>Sungkyunkwan University</strong>.
           My research focuses on <strong>GUI agents</strong>, <strong>multi-step reasoning</strong>, and <strong>self-play</strong>
           — building LLM-driven agents that can plan, act, and learn from interaction on real user interfaces.
         </p>
+        <!-- 두 번째 문단: 현재 연구실과 이전 활동 -->
         <p>
           At <strong>FCLab</strong>, I work on tool-using agents and evaluation for complex, multi-step tasks.
           Previously at <strong>OUTTA</strong>, I taught the OUTTA AI Bootcamp, contributed to a deep learning book project, and carried out AI alignment research.
         </p>
+        <!-- 세 번째 문단: 학부 배경과 마무리 -->
         <p>
           I earned a B.S. in Intelligent Mechatronics Engineering from <strong>Sejong University</strong>.
           I enjoy open-source and collaboration — feel free to reach out.
         </p>
       </div>
+      <!-- 키워드 태그: 국적, 사용 언어 등 간략한 정보를 알약형 뱃지로 표시 -->
       <div class="tags">
         <span class="tag">South Korea</span>
         <span class="tag">English · Korean</span>
       </div>
     </section>
 
-    <!-- Education -->
+    <!-- ==================== Education 섹션 (학력) ====================
+         .entries > .entry 구조로 학력 정보를 시간순(최신 먼저) 표시.
+         각 항목은 CSS Grid로 [날짜 | 학교명+학과] 2열 레이아웃입니다. -->
     <section id="education" class="fade-in">
       <h2>Education</h2>
       <div class="entries">
+        <!-- 석사 과정 -->
         <div class="entry">
           <div class="entry-date">2025 — Present</div>
           <div class="entry-content">
@@ -524,6 +706,7 @@
             <div class="entry-meta">M.S. · Department of Artificial Intelligence</div>
           </div>
         </div>
+        <!-- 학사 과정 -->
         <div class="entry">
           <div class="entry-date">2021 — 2025</div>
           <div class="entry-content">
@@ -534,10 +717,13 @@
       </div>
     </section>
 
-    <!-- Experience -->
+    <!-- ==================== Experience 섹션 (경력) ====================
+         Education과 동일한 .entries/.entry 구조 사용.
+         경력에는 추가로 .entry-desc(업무 설명)이 포함됩니다. -->
     <section id="experience" class="fade-in">
       <h2>Experience</h2>
       <div class="entries">
+        <!-- 성균관대학교 FCLab 연구실 -->
         <div class="entry">
           <div class="entry-date">2025 — Present</div>
           <div class="entry-content">
@@ -546,6 +732,7 @@
             <div class="entry-desc">Research on tool-using GUI agents and evaluation for complex, multi-step tasks.</div>
           </div>
         </div>
+        <!-- OUTTA AI 비영리 단체 -->
         <div class="entry">
           <div class="entry-date">2022 — Present</div>
           <div class="entry-content">
@@ -554,6 +741,7 @@
             <div class="entry-desc">Instructor for the OUTTA AI Bootcamp, contributor to a deep learning book, and AI alignment research.</div>
           </div>
         </div>
+        <!-- 네이버 AI RUSH 프로그램 -->
         <div class="entry">
           <div class="entry-date">2023</div>
           <div class="entry-content">
@@ -565,14 +753,20 @@
       </div>
     </section>
 
-    <!-- Publications -->
+    <!-- ==================== Publications 섹션 (논문) ====================
+         <ul> 리스트로 논문 목록을 표시합니다.
+         각 항목: 논문 제목(링크) + 저자 목록.
+         본인 이름은 <strong>으로 굵게 표시하여 시각적으로 구분합니다.
+         †: 교신저자(corresponding author) 표시. -->
     <section id="publications" class="fade-in">
       <h2>Publications</h2>
       <ul class="pub-list">
         <li>
+          <!-- 논문 제목: 클릭 시 DBPIA(학술 DB) 논문 페이지로 이동 -->
           <a class="pub-title" href="https://www.dbpia.co.kr/journal/articleDetail?nodeId=NODE12057944" target="_blank" rel="noopener noreferrer">
             Towards Light-weight, Ophthalmology-specialized Vision-language Models via Synthesized Diagnostic Rationales
           </a>
+          <!-- 저자 목록: 본인(1저자) 이름을 굵게 표시 -->
           <div class="pub-authors">
             <strong>Seungwoo Baek</strong>, Kai Tzu-iunn Ong, Jiu Kim, Junwon Seo, Jinyeong Yeo†, Eunyeong Choi†. 2025.
           </div>
@@ -580,22 +774,28 @@
       </ul>
     </section>
 
-    <!-- Awards -->
+    <!-- ==================== Awards 섹션 (수상 경력) ====================
+         수상 정보(등급 + 대회명)와 날짜를 양 끝 정렬로 배치합니다.
+         최신순으로 나열합니다. -->
     <section id="awards" class="fade-in">
       <h2>Awards</h2>
       <ul class="award-list">
+        <!-- 과기정통부 AI 혁신 연구 챔피언 (1위) -->
         <li>
           <span class="award-info"><strong>1st Place (AI Champion)</strong> — <a href="https://sites.google.com/view/fclab-skku/press?authuser=0" target="_blank" rel="noopener noreferrer">MSIT AI Innovation Research Champion</a></span>
           <span class="award-date">2025.11</span>
         </li>
+        <!-- 세종대 AI 챌린지 (3등) -->
         <li>
           <span class="award-info"><strong>3rd Prize</strong> — Sejong AI Challenge</span>
           <span class="award-date">2024.12</span>
         </li>
+        <!-- INISW 아카데미 성과 발표 (4등) -->
         <li>
           <span class="award-info"><strong>4th Prize</strong> — INISW Academy Performance Presentations</span>
           <span class="award-date">2023.06</span>
         </li>
+        <!-- 한국경제신문 AI 아이디어 콘테스트 (1등) -->
         <li>
           <span class="award-info"><strong>1st Prize</strong> — The Korea Economic Daily AI Idea Contest</span>
           <span class="award-date">2023.05</span>
@@ -603,7 +803,9 @@
       </ul>
     </section>
 
-    <!-- Contact -->
+    <!-- ==================== Contact 섹션 (연락처) ====================
+         연락 안내 문구 + 버튼형 링크(Email, LinkedIn)를 제공합니다.
+         호버 시 아웃라인 버튼이 채워지는 인터랙션이 적용되어 있습니다. -->
     <section id="contact" class="fade-in">
       <h2>Contact</h2>
       <p class="contact-text">Welcome inquiries regarding collaboration, recruitment, and research at any time.</p>
@@ -615,17 +817,34 @@
 
   </main>
 
+  <!-- ==================== 푸터 ====================
+       저작권 정보와 호스팅 플랫폼 표시.
+       연도는 JavaScript로 자동 갱신됩니다. -->
   <footer>
     <div class="wrap">
+      <!-- id="y" 영역에 JS로 현재 연도가 삽입됨 -->
       © <span id="y"></span> Seungwoo Baek · Built on GitHub Pages
     </div>
   </footer>
 
+  <!-- ==================== JavaScript ====================
+       현재 연도를 자동으로 삽입하는 간단한 스크립트.
+       매년 수동으로 연도를 바꿀 필요가 없습니다. -->
   <script>
     document.getElementById('y').textContent = new Date().getFullYear();
   </script>
 
-  <!-- Structured Data -->
+  <!-- ==================== 구조화된 데이터 (JSON-LD) ====================
+       검색 엔진(Google 등)이 이 페이지의 콘텐츠를 더 잘 이해할 수 있도록
+       Schema.org 표준에 따라 사람(Person) 정보를 구조화합니다.
+
+       효과:
+       - 검색 결과에 풍부한 정보 표시 (리치 스니펫)
+       - 구글 지식 패널에 정보 제공 가능
+       - sameAs: 동일 인물의 다른 프로필 페이지를 연결
+
+       JSON-LD는 페이지 렌더링에 영향을 주지 않으며,
+       검색 엔진 크롤러만 읽는 메타데이터입니다. -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
