@@ -450,7 +450,7 @@
     .award-list li {
       display: flex;
       justify-content: space-between; /* 수상 정보(좌) — 날짜(우) 양 끝 배치 */
-      align-items: baseline;          /* 텍스트 기준선(baseline) 정렬 */
+      align-items: flex-start;        /* 상단 정렬 (다중 행 항목 지원) */
       padding: 14px 0;
       border-bottom: 1px solid var(--border-light);
       gap: 16px;                      /* 정보와 날짜 사이 최소 간격 */
@@ -475,6 +475,12 @@
 
     .award-info a:hover {
       text-decoration: underline;
+    }
+
+    .award-detail {
+      font-size: 13px;
+      color: var(--text-tertiary);
+      margin-top: 2px;
     }
 
     /* 수상 날짜: 오른쪽 끝, 줄어들지 않음 */
@@ -788,9 +794,12 @@
     <section id="awards" class="fade-in">
       <h2>Awards</h2>
       <ul class="award-list">
-        <!-- 과기정통부 AI 혁신 연구 챔피언 (1위) -->
+        <!-- AI Champion (1위) -->
         <li>
-          <span class="award-info"><strong>1st Prize</strong> — AI Champion, <a href="https://www.aitimes.kr/news/articleView.html?idxno=37080" target="_blank" rel="noopener noreferrer">MSIT AI Innovation Research Champion</a></span>
+          <div class="award-info">
+            <div><strong>1st Prize</strong> — AI Champion</div>
+            <div class="award-detail">MSIT Minister's Award · <a href="https://www.aitimes.kr/news/articleView.html?idxno=37080" target="_blank" rel="noopener noreferrer">AI Times 기사</a></div>
+          </div>
           <span class="award-date">2025.11</span>
         </li>
         <!-- 세종대 AI 챌린지 (3등) -->
