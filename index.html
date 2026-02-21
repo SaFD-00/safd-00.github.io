@@ -1,186 +1,455 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
-  <!--
-    ✅ 목적: 간결한 원페이지 CV
-    - 불필요/미사용 코드 제거, 다크모드 색상 버그 수정, 메타데이터 보정
-    - 각 블록에 자세한 주석 추가
-  -->
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="color-scheme" content="light dark" />
-
   <title>Seungwoo Baek</title>
-  <meta name="description" content="bsw8369@g.skku.edu" />
+  <meta name="description" content="AI Researcher — GUI Agents, Multi-step Reasoning, Self-play" />
 
-  <!-- Open Graph: 공유 미리보기용. 실제 배포 URL/이미지로 업데이트하세요. -->
+  <!-- Open Graph -->
   <meta property="og:title" content="Seungwoo Baek" />
-  <meta property="og:description" content="bsw8369@g.skku.edu" />
+  <meta property="og:description" content="AI Researcher at Sungkyunkwan University" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://safd-00.github.io/" />
   <meta property="og:image" content="img/ID-photo.jpg" />
-  <meta property="og:image:alt" content="Seungwoo Baek" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Seungwoo Baek" />
-  <meta name="twitter:description" content="bsw8369@g.skku.edu" />
-  <meta name="twitter:image" content="img/ID-photo.jpg" />
 
   <link rel="icon" href="/favicon.ico" />
 
+  <!-- Fonts: Lora (body) + Open Sans (headings) — matching noambrown.github.io -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+
   <style>
-    /*
-      ========== 디자인 토큰 ==========
-      - 라이트/다크 모드 모두에서 재사용할 색/치수 변수
-    */
+    /* ========== Design Tokens ========== */
     :root {
-      --bg: #ffffff;
-      --text: #0f172a;  /* slate-900 */
-      --muted: #475569; /* slate-600 */
-      --card: #f8fafc;  /* slate-50 */
-      --accent: #2563eb;   /* blue-600 */
-      --accent-2: #0ea5e9; /* sky-500 */
-      --border: #e2e8f0;   /* slate-200 */
-      --maxw: 960px;       /* 본문 최대 너비 */
-    }
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg: #0b1220;
-        --text: #e5e7eb;  /* 다크에서 본문 텍스트는 밝게 */
-        --muted: #94a3b8;
-        --card: #0f172a;
-        --accent: #60a5fa;
-        --accent-2: #38bdf8;
-        --border: #1f2937;
-      }
+      --bg: #FAFAFA;
+      --surface: #FFFFFF;
+      --text: #404040;
+      --text-secondary: #606060;
+      --text-tertiary: #808080;
+      --link: #0085A1;
+      --link-hover: #00657d;
+      --accent: #404040;
+      --accent-hover: #606060;
+      --border: #EBEBEB;
+      --border-light: #F2F2F2;
+      --radius: 2px;
+      --font-display: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      --font-body: 'Lora', 'Times New Roman', serif;
+      --max-w: 720px;
+      --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    /* 기본 레이아웃/타이포 */
-    * { box-sizing: border-box; }
-    html, body { height: 100%; }
-    body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
-      color: var(--text);
-      background: linear-gradient(180deg, var(--bg), var(--card));
-      line-height: 1.6;
+    /* ========== Reset & Base ========== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      scroll-behavior: smooth;
       -webkit-font-smoothing: antialiased;
       text-rendering: optimizeLegibility;
     }
-    .container { max-width: var(--maxw); margin: 0 auto; padding: 24px; }
 
-    /*
-      ========== 헤더(프로필) ==========
-      - 사진/텍스트 좌우 배치
-      - 한 곳에서 패딩/레이아웃을 정의 (중복 선언 제거)
-    */
-    header.hero {
-      padding: 72px 0 24px;
-      display: flex; align-items: center; gap: 24px;
-    }
-    /* 프로필 이미지: CLS 방지를 위해 width/height는 HTML 속성에도 지정 */
-    .profile-pic {
-      width: 140px; height: 180px; object-fit: cover;
-      border-radius: 12px; border: 1px solid var(--border);
-      flex: 0 0 auto;
-    }
-    .hero-right { min-width: 0; } /* 텍스트 줄바꿈/오버플로 제어 */
-
-    /* 모바일에서는 위아래 스택 */
-    @media (max-width: 640px) {
-      header.hero { flex-direction: column; align-items: flex-start; }
-      .profile-pic { width: 160px; height: 200px; }
+    body {
+      font-family: var(--font-body);
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.7;
+      font-size: 15px;
     }
 
-    .name { font-size: clamp(32px, 6vw, 56px); font-weight: 800; letter-spacing: -0.02em; margin: 0 0 8px; }
-    .tagline { font-size: clamp(16px, 2.4vw, 20px); color: var(--muted); margin: 0 0 20px; }
+    ::selection {
+      background: var(--text);
+      color: var(--surface);
+    }
 
-    /* 빠른 링크(칩) 영역: 다크모드 가독성을 위해 텍스트 색은 var(--text) 사용 */
-    .chipbar { display: flex; flex-wrap: wrap; gap: 10px; margin: 20px 0 8px; }
-    .chipbar a { text-decoration: none; color: var(--text); border: 1px solid var(--border); background: #fff3; padding: 8px 12px; border-radius: 999px; display: inline-flex; align-items: center; gap: 8px; }
-    .chipbar a:hover { border-color: var(--accent); box-shadow: 0 4px 14px rgba(37,99,235,.18); transform: translateY(-1px); transition: .2s; }
+    a { color: var(--link); text-decoration: none; }
+    a:hover { color: var(--link-hover); text-decoration: underline; }
+    img { display: block; max-width: 100%; }
 
-    /*
-      ========== 상단 내비게이션 ==========
-      - sticky + blur 배경
-    */
-    nav.topnav { position: sticky; top: 0; backdrop-filter: saturate(180%) blur(8px); background: color-mix(in oklab, var(--bg) 85%, transparent); border-bottom: 1px solid var(--border); z-index: 50; }
-    nav.topnav .container { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-    .nav-brand { font-weight: 700; letter-spacing: -0.01em; }
-    .nav-links { display: flex; gap: 14px; flex-wrap: wrap; }
-    .nav-links a { color: var(--muted); text-decoration: none; padding: 12px 6px; }
-    .nav-links a:hover { color: var(--accent); }
+    /* ========== Layout ========== */
+    .wrap {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
 
-    /* 본문 내 링크를 본문색으로(밑줄 제거). 다크 모드에서도 가독성 유지 */
-    .card a:not([href^="mailto:"]):not([href*="linkedin.com"]):not([href*="github.com"]),
-    .item h3 a:not([href^="mailto:"]):not([href*="linkedin.com"]):not([href*="github.com"]),
-    #publications a:not([href^="mailto:"]):not([href*="linkedin.com"]):not([href*="github.com"]) { color: #0A66C2; text-decoration: none; }
-    .card a:hover, .item h3 a:hover, #publications a:hover { text-decoration: none; }
+    /* ========== Navigation ========== */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(250, 250, 250, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-light);
+    }
 
-    /* 섹션/카드 공통 */
-    section { padding: 56px 0; }
-    section h2 { font-size: clamp(22px, 3vw, 28px); margin: 0 0 20px; letter-spacing: -0.01em; }
-    .card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 20px; }
-    .grid { display: grid; gap: 16px; }
-    .grid.two { grid-template-columns: repeat(2, minmax(0,1fr)); }
-    /* .grid.three (미사용) 제거 */
-    @media (max-width: 860px) { .grid.two { grid-template-columns: 1fr; } }
+    nav .wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+    }
 
-    .item h3 { margin: 0 0 6px; font-size: 18px; }
-    .item .meta { color: var(--muted); font-size: 14px; }
-    .pill { display:inline-block; border:1px solid var(--border); padding:2px 8px; border-radius:999px; font-size:12px; color:var(--muted); }
-    ul.clean { list-style: none; padding: 0; margin: 0; }
-    ul.clean li { padding: 10px 0; border-bottom: 1px dashed var(--border); }
-    ul.clean li:last-child { border-bottom: 0; }
+    .nav-name {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--text);
+    }
 
-    footer { padding: 40px 0 80px; color: var(--muted); font-size: 14px; text-align: center; }
+    .nav-links {
+      display: flex;
+      gap: 24px;
+    }
 
-    .btn { display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:12px; border:1px solid var(--border); text-decoration:none; color:var(--text); }
-    /* .btn.primary (미사용) 제거 */
-    .btn:hover { transform: translateY(-1px); box-shadow: 0 8px 18px rgba(0,0,0,.08); transition: .2s; }
-
-    .row { display:flex; gap:16px; flex-wrap:wrap; align-items:center; }
-    .spacer { height: 16px; }
-
-    /* 스크린리더용 skip link */
-    .sr { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
-
-    /*
-      ========== 외부 링크: 도메인 브랜드 컬러 적용 ==========
-      - JS가 a.brand-link 클래스를 붙이면 이 규칙으로 본문색을 덮어쓴다.
-    */
-    a.brand-link {
-      color: var(--brand) !important; /* 본문색 강제 덮어쓰기 */
+    .nav-links a {
+      font-size: 13px;
+      color: var(--text-tertiary);
+      letter-spacing: 0.02em;
+      transition: color var(--transition);
       text-decoration: none;
     }
-    a.brand-link:hover {
-      text-decoration: underline;
-      text-underline-offset: 2px;
-      text-decoration-thickness: 2px;
-    }
-    .chipbar a.brand-link,
-    .card a.brand-link,
-    .item h3 a.brand-link,
-    #publications a.brand-link { color: var(--brand) !important; }
 
-    /* 인쇄(PDF 저장) 최적화: 네비게이션 숨김, 여백/폰트 크기 조정 */
+    .nav-links a:hover {
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    @media (max-width: 600px) {
+      .nav-links { gap: 14px; }
+      .nav-links a { font-size: 12px; }
+    }
+
+    /* ========== Hero / Header ========== */
+    .hero {
+      padding: 80px 0 0;
+    }
+
+    .hero-inner {
+      display: flex;
+      align-items: flex-start;
+      gap: 40px;
+    }
+
+    .hero-photo {
+      width: 130px;
+      height: 168px;
+      object-fit: cover;
+      border-radius: var(--radius);
+      flex-shrink: 0;
+      filter: grayscale(15%);
+    }
+
+    .hero-text { flex: 1; min-width: 0; }
+
+    .hero-text h1 {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 5vw, 44px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      margin-bottom: 16px;
+      color: var(--text);
+    }
+
+    .hero-links {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    .hero-links a {
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: var(--link);
+      padding-bottom: 1px;
+      border-bottom: 1px solid transparent;
+      transition: all var(--transition);
+      letter-spacing: 0.01em;
+      text-decoration: none;
+    }
+
+    .hero-links a:hover {
+      border-bottom-color: var(--link);
+      text-decoration: none;
+    }
+
+    @media (max-width: 600px) {
+      .hero { padding: 48px 0 0; }
+      .hero-inner { flex-direction: column; gap: 24px; }
+      .hero-photo { width: 100px; height: 130px; }
+    }
+
+    /* ========== Sections ========== */
+    section {
+      padding: 64px 0 0;
+    }
+
+    section h2 {
+      font-family: var(--font-display);
+      font-size: clamp(22px, 3vw, 28px);
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: 28px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    /* ========== About ========== */
+    .about-text p {
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+      font-size: 15px;
+      line-height: 1.8;
+    }
+
+    .about-text p:last-of-type { margin-bottom: 0; }
+
+    .about-text strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .about-text a {
+      color: var(--link);
+    }
+
+    .tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    .tag {
+      font-size: 12px;
+      color: var(--text-tertiary);
+      border: 1px solid var(--border);
+      padding: 4px 12px;
+      border-radius: 999px;
+      letter-spacing: 0.02em;
+    }
+
+    /* ========== Grid Items (Education, Experience) ========== */
+    .entries {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .entry {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 24px;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .entry:last-child { border-bottom: none; }
+
+    .entry-date {
+      font-size: 13px;
+      color: var(--text-tertiary);
+      padding-top: 2px;
+    }
+
+    .entry-content h3 {
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .entry-content h3 a {
+      color: var(--link);
+      transition: color var(--transition);
+      text-decoration: none;
+    }
+
+    .entry-content h3 a:hover {
+      color: var(--link-hover);
+      text-decoration: underline;
+    }
+
+    .entry-meta {
+      font-size: 13px;
+      color: var(--text-tertiary);
+      line-height: 1.6;
+    }
+
+    .entry-desc {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-top: 8px;
+      line-height: 1.7;
+    }
+
+    @media (max-width: 600px) {
+      .entry {
+        grid-template-columns: 1fr;
+        gap: 4px;
+      }
+    }
+
+    /* ========== Publications ========== */
+    .pub-list {
+      list-style: none;
+    }
+
+    .pub-list li {
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .pub-list li:last-child { border-bottom: none; }
+
+    .pub-title {
+      font-size: 15px;
+      font-weight: 500;
+      line-height: 1.6;
+      display: block;
+      margin-bottom: 4px;
+      color: var(--link);
+      transition: color var(--transition);
+      text-decoration: none;
+    }
+
+    .pub-title:hover { color: var(--link-hover); text-decoration: underline; }
+
+    .pub-authors {
+      font-size: 13px;
+      color: var(--text-tertiary);
+      line-height: 1.6;
+    }
+
+    /* ========== Awards ========== */
+    .award-list {
+      list-style: none;
+    }
+
+    .award-list li {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border-light);
+      gap: 16px;
+    }
+
+    .award-list li:last-child { border-bottom: none; }
+
+    .award-info {
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .award-info strong {
+      font-weight: 600;
+    }
+
+    .award-info a {
+      color: var(--link);
+      text-decoration: none;
+    }
+
+    .award-info a:hover {
+      text-decoration: underline;
+    }
+
+    .award-date {
+      font-size: 12px;
+      color: var(--text-tertiary);
+      flex-shrink: 0;
+    }
+
+    /* ========== Contact ========== */
+    .contact-text {
+      color: var(--text-secondary);
+      font-size: 15px;
+      margin-bottom: 20px;
+    }
+
+    .contact-links {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .contact-links a {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--link);
+      padding: 10px 20px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      transition: all var(--transition);
+      letter-spacing: 0.01em;
+      text-decoration: none;
+    }
+
+    .contact-links a:hover {
+      background: var(--link);
+      color: var(--surface);
+      border-color: var(--link);
+      text-decoration: none;
+    }
+
+    /* ========== Footer ========== */
+    footer {
+      margin-top: 80px;
+      padding: 32px 0;
+      border-top: 1px solid var(--border-light);
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-tertiary);
+      letter-spacing: 0.02em;
+    }
+
+    /* ========== Fade-in Animation ========== */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(16px);
+      animation: fadeUp 0.6s ease forwards;
+    }
+
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-in:nth-child(1) { animation-delay: 0s; }
+    .fade-in:nth-child(2) { animation-delay: 0.08s; }
+    .fade-in:nth-child(3) { animation-delay: 0.16s; }
+    .fade-in:nth-child(4) { animation-delay: 0.24s; }
+    .fade-in:nth-child(5) { animation-delay: 0.32s; }
+    .fade-in:nth-child(6) { animation-delay: 0.40s; }
+    .fade-in:nth-child(7) { animation-delay: 0.48s; }
+
+    /* ========== Print ========== */
     @media print {
-      nav.topnav { display: none !important; }
-      .container { max-width: 900px; padding: 0; }
-      section { padding: 18px 0; }
-      .card { border: none; background: transparent; padding: 0; }
-      a { color: black; text-decoration: none; }
-      .name { font-size: 28px; }
+      nav { display: none !important; }
+      body { background: white; font-size: 12px; }
+      section { padding: 16px 0 0; }
+      .hero { padding: 24px 0 0; }
+      footer { margin-top: 24px; }
+      .fade-in { opacity: 1; transform: none; animation: none; }
     }
   </style>
 </head>
 <body>
-  <!-- 키보드 사용자 접근성 향상: 본문으로 바로 가기 -->
-  <a href="#main" class="sr">본문으로 건너뛰기</a>
 
-  <!-- 상단 고정 내비게이션 -->
-  <nav class="topnav" aria-label="주요 탐색">
-    <div class="container">
-      <div class="nav-brand">Seungwoo Baek</div>
+  <!-- Skip Link -->
+  <a href="#main" style="position:absolute;left:-9999px;">본문으로 건너뛰기</a>
+
+  <!-- Navigation -->
+  <nav aria-label="주요 탐색">
+    <div class="wrap">
+      <div class="nav-name">Seungwoo Baek</div>
       <div class="nav-links">
         <a href="#about">About</a>
         <a href="#education">Education</a>
@@ -192,28 +461,40 @@
     </div>
   </nav>
 
-  <!-- 헤더: 왼쪽 사진 + 오른쪽 텍스트/링크 -->
-  <header class="hero container" id="main">
-    <!-- CLS 방지를 위해 width/height 지정, 즉시 렌더를 위해 loading="eager" -->
-    <img src="/img/ID-photo.jpg" alt="Seungwoo Baek" class="profile-pic" width="140" height="180" decoding="async" loading="eager" />
-    <div class="hero-right">
-      <h1 class="name">Seungwoo Baek</h1>
-      <div class="chipbar" aria-label="빠른 링크">
-        <a href="mailto:bsw8369@g.skku.edu" aria-label="E-Mail">✉️ <span><strong>E-Mail</strong></span></a>
-        <a href="https://www.linkedin.com/in/name-seungwoo-baek/" target="_blank" rel="noopener noreferrer">📱 <span><strong>LinkedIn</strong></span></a>
-        <a href="https://github.com/SaFD-00" target="_blank" rel="noopener noreferrer">💻 <span><strong>GitHub</strong></span></a>
-        <a href="https://bsw8369.tistory.com/" target="_blank" rel="noopener noreferrer">💻 <span><strong>Blog</strong></span></a>
+  <!-- Hero -->
+  <header class="hero" id="main">
+    <div class="wrap">
+      <div class="hero-inner fade-in">
+        <img
+          src="/img/ID-photo.jpg"
+          alt="Seungwoo Baek"
+          class="hero-photo"
+          width="130"
+          height="168"
+          decoding="async"
+          loading="eager"
+        />
+        <div class="hero-text">
+          <h1>Seungwoo Baek</h1>
+          <div class="hero-links">
+            <a href="mailto:bsw8369@g.skku.edu">Email</a>
+            <a href="https://www.linkedin.com/in/name-seungwoo-baek/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            <a href="https://github.com/SaFD-00" target="_blank" rel="noopener noreferrer">GitHub</a>
+            <a href="https://bsw8369.tistory.com/" target="_blank" rel="noopener noreferrer">Blog</a>
+          </div>
+        </div>
       </div>
     </div>
   </header>
 
-  <main class="container">
+  <main class="wrap">
+
     <!-- About -->
-    <section id="about">
+    <section id="about" class="fade-in">
       <h2>About</h2>
-      <div class="card">
+      <div class="about-text">
         <p>
-          I’m a Master’s student in Artificial Intelligence at <strong>Sungkyunkwan University</strong>.
+          I'm a Master's student in Artificial Intelligence at <strong>Sungkyunkwan University</strong>.
           My research focuses on <strong>GUI agents</strong>, <strong>multi-step reasoning</strong>, and <strong>self-play</strong>
           — building LLM-driven agents that can plan, act, and learn from interaction on real user interfaces.
         </p>
@@ -223,221 +504,128 @@
         </p>
         <p>
           I earned a B.S. in Intelligent Mechatronics Engineering from <strong>Sejong University</strong>.
-          I enjoy open-source and collaboration - feel free to reach out.
+          I enjoy open-source and collaboration — feel free to reach out.
         </p>
-        <div class="spacer"></div>
-        <div class="row">
-          <span class="pill">South Korea</span>
-          <span class="pill">English · Korean</span>
-        </div>
+      </div>
+      <div class="tags">
+        <span class="tag">South Korea</span>
+        <span class="tag">English · Korean</span>
       </div>
     </section>
 
     <!-- Education -->
-    <section id="education">
+    <section id="education" class="fade-in">
       <h2>Education</h2>
-      <div class="grid two">
-        <div class="card item">
-          <h3>
-            <a href="https://www.skku.edu/eng/index.do" target="_blank" rel="noopener noreferrer">Sungkyunkwan University</a>
-          </h3>
-          <div class="meta">M.S</div>
-          <div class="meta">Department of Artificial Intelligence</div>
-          <div class="meta">2025 - Present</div>
+      <div class="entries">
+        <div class="entry">
+          <div class="entry-date">2025 — Present</div>
+          <div class="entry-content">
+            <h3><a href="https://www.skku.edu/eng/index.do" target="_blank" rel="noopener noreferrer">Sungkyunkwan University</a></h3>
+            <div class="entry-meta">M.S. · Department of Artificial Intelligence</div>
+          </div>
         </div>
-        <div class="card item">
-          <h3>
-            <a href="https://en.sejong.ac.kr/eng/index.do" target="_blank" rel="noopener noreferrer">Sejong University</a>
-          </h3>
-          <div class="meta">B.S</div>
-          <div class="meta">Department of Intelligent Mechatronics Engineering</div>
-          <div class="meta">2021 - 2025</div>
+        <div class="entry">
+          <div class="entry-date">2021 — 2025</div>
+          <div class="entry-content">
+            <h3><a href="https://en.sejong.ac.kr/eng/index.do" target="_blank" rel="noopener noreferrer">Sejong University</a></h3>
+            <div class="entry-meta">B.S. · Department of Intelligent Mechatronics Engineering</div>
+          </div>
         </div>
       </div>
     </section>
 
     <!-- Experience -->
-    <section id="experience">
+    <section id="experience" class="fade-in">
       <h2>Experience</h2>
-      <div class="grid two">
-        <article class="card item">
-          <h3>
-            <a href="https://sites.google.com/view/fclab-skku" target="_blank" rel="noopener noreferrer">FCLab</a>
-          </h3>
-          <div class="meta">Sungkyunkwan University</div>
-          <div class="meta">2025 - Present</div>
-          <p>I conduct research on tool-using GUI agents and evaluation for complex, multi-step tasks.</p>
-        </article>
-        
-        <article class="card item">
-          <h3>
-            <a href="https://outta.ai/" target="_blank" rel="noopener noreferrer">OUTTA</a>
-          </h3>
-          <div class="meta">AI Non-Profit Organisation</div>
-          <div class="meta">2022 - Present</div>
-          <p>I serve as an instructor for the OUTTA AI Bootcamp, contribute to a deep learning book, and conduct AI research.</p>
-        </article>
-
-        <article class="card item">
-          <h3>
-            <a href="https://airush.ncloud.com/" target="_blank" rel="noopener noreferrer">NAVER</a>
-          </h3>
-          <div class="meta">AI RUSH</div>
-          <div class="meta">2023</div>
-          <p>I conducted research on detecting personal information combinations based on LLM.</p>
-        </article>
+      <div class="entries">
+        <div class="entry">
+          <div class="entry-date">2025 — Present</div>
+          <div class="entry-content">
+            <h3><a href="https://sites.google.com/view/fclab-skku" target="_blank" rel="noopener noreferrer">FCLab</a></h3>
+            <div class="entry-meta">Sungkyunkwan University</div>
+            <div class="entry-desc">Research on tool-using GUI agents and evaluation for complex, multi-step tasks.</div>
+          </div>
+        </div>
+        <div class="entry">
+          <div class="entry-date">2022 — Present</div>
+          <div class="entry-content">
+            <h3><a href="https://outta.ai/" target="_blank" rel="noopener noreferrer">OUTTA</a></h3>
+            <div class="entry-meta">AI Non-Profit Organisation</div>
+            <div class="entry-desc">Instructor for the OUTTA AI Bootcamp, contributor to a deep learning book, and AI alignment research.</div>
+          </div>
+        </div>
+        <div class="entry">
+          <div class="entry-date">2023</div>
+          <div class="entry-content">
+            <h3><a href="https://airush.ncloud.com/" target="_blank" rel="noopener noreferrer">NAVER AI RUSH</a></h3>
+            <div class="entry-meta">NAVER</div>
+            <div class="entry-desc">Research on detecting personal information combinations based on LLM.</div>
+          </div>
+        </div>
       </div>
     </section>
 
     <!-- Publications -->
-    <section id="publications">
+    <section id="publications" class="fade-in">
       <h2>Publications</h2>
-      <div class="card">
-        <ul class="clean">
-          <li>
-            <a href="https://www.dbpia.co.kr/journal/articleDetail?nodeId=NODE12057944" target="_blank" rel="noopener noreferrer">Towards Light-weight, Ophthalmology-specialized Vision-language Models via Synthesized Diagnostic Rationales</a>.
-            <span class="meta"><strong>Seungwoo Baek</strong>, Kai Tzu-iunn Ong, Jiu Kim, Junwon Seo, Jinyeong Yeo†, Eunyeong Choi†. 2025.</span>
-          </li>
-        </ul>
-      </div>
+      <ul class="pub-list">
+        <li>
+          <a class="pub-title" href="https://www.dbpia.co.kr/journal/articleDetail?nodeId=NODE12057944" target="_blank" rel="noopener noreferrer">
+            Towards Light-weight, Ophthalmology-specialized Vision-language Models via Synthesized Diagnostic Rationales
+          </a>
+          <div class="pub-authors">
+            <strong>Seungwoo Baek</strong>, Kai Tzu-iunn Ong, Jiu Kim, Junwon Seo, Jinyeong Yeo†, Eunyeong Choi†. 2025.
+          </div>
+        </li>
+      </ul>
     </section>
-    
+
     <!-- Awards -->
-    <section id="awards">
+    <section id="awards" class="fade-in">
       <h2>Awards</h2>
-      <div class="card">
-        <ul class="clean">
-          <li><strong>3rd Prize</strong>, Sejong AI Challenge <span class="meta">(2024.12)</span></li>
-          <li><strong>4th Prize</strong>, INISW Academy Performance Presentations <span class="meta">(2023.06)</span></li>
-          <li><strong>1st Prize</strong>, The Korea Economic Daily AI Idea Contest <span class="meta">(2023.05)</span></li>
-        </ul>
-      </div>
+      <ul class="award-list">
+        <li>
+          <span class="award-info"><strong>1st Place (AI Champion)</strong> — <a href="https://sites.google.com/view/fclab-skku/press?authuser=0" target="_blank" rel="noopener noreferrer">MSIT AI Innovation Research Champion</a></span>
+          <span class="award-date">2025.11</span>
+        </li>
+        <li>
+          <span class="award-info"><strong>3rd Prize</strong> — Sejong AI Challenge</span>
+          <span class="award-date">2024.12</span>
+        </li>
+        <li>
+          <span class="award-info"><strong>4th Prize</strong> — INISW Academy Performance Presentations</span>
+          <span class="award-date">2023.06</span>
+        </li>
+        <li>
+          <span class="award-info"><strong>1st Prize</strong> — The Korea Economic Daily AI Idea Contest</span>
+          <span class="award-date">2023.05</span>
+        </li>
+      </ul>
     </section>
 
     <!-- Contact -->
-    <section id="contact">
+    <section id="contact" class="fade-in">
       <h2>Contact</h2>
-      <div class="card">
-        <p>Welcome inquiries regarding collaboration, recruitment, and research at any time</p>
-        <div class="row">
-          <a class="btn" href="mailto:bsw8369@g.skku.edu">✉️ <strong>E-Mail</strong></a>
-          <a class="btn" href="https://www.linkedin.com/in/name-seungwoo-baek" target="_blank" rel="noopener noreferrer">📱 <strong>LinkedIn</strong></a>
-        </div>
+      <p class="contact-text">Welcome inquiries regarding collaboration, recruitment, and research at any time.</p>
+      <div class="contact-links">
+        <a href="mailto:bsw8369@g.skku.edu">Email</a>
+        <a href="https://www.linkedin.com/in/name-seungwoo-baek" target="_blank" rel="noopener noreferrer">LinkedIn</a>
       </div>
     </section>
+
   </main>
 
   <footer>
-    <div class="container">
-      © <span id="y"></span> 백승우 · Built on GitHub Pages
+    <div class="wrap">
+      © <span id="y"></span> Seungwoo Baek · Built on GitHub Pages
     </div>
   </footer>
 
   <script>
-    // ================== 유틸: 부드러운 앵커 스크롤 ==================
-    // 페이지 내 #섹션 링크를 클릭하면 스무스 스크롤로 이동합니다.
-    document.querySelectorAll('a[href^="#"]').forEach(a => {
-      a.addEventListener('click', e => {
-        const id = a.getAttribute('href');
-        if (id.length > 1) {
-          const el = document.querySelector(id);
-          if (el) {
-            e.preventDefault();
-            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }
-        }
-      });
-    });
-
-    // ================== 푸터 연도 자동 갱신 ==================
     document.getElementById('y').textContent = new Date().getFullYear();
   </script>
 
-  <!--
-    외부 링크 도메인에 따라 포인트 컬러를 적용합니다.
-    - 본문 내 a[href^="http"]를 순회하며 아래 BRAND_COLORS에 매핑된 도메인에는
-      a.brand-link 클래스를 부여하고, --brand 커스텀 프로퍼티를 주입합니다.
-    - 다크 모드에서 너무 어두운 색은 약간 밝게 보정합니다.
-  -->
-  <script>
-  (() => {
-    // 필요한 도메인과 대표 색상만 등록 (원하면 자유롭게 추가/수정)
-    const BRAND_COLORS = {
-      "skku.edu":     "#0A66C2",
-      "sejong.ac.kr": "#0A66C2",
-      "outta.ai":     "#0A66C2",
-      "dbpia.co.kr":  "#0A66C2"
-    };
-
-    // 특정 경로에만 색을 적용해야 하는 경우(예: FCLab: sites.google.com/view/fclab-skku)
-    const BRAND_PATH_COLORS = [
-      { host: "sites.google.com", pathPrefix: "/view/fclab-skku", color: "#0A66C2" }
-    ];
-
-    // 브랜드 색을 적용하지 않을 호스트 (예외 처리: LinkedIn, GitHub)
-    const SKIP_HOSTS = new Set(["linkedin.com", "github.com"]);
-
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-
-    // HEX <-> RGB 변환 및 밝기 보정 유틸
-    function hexToRgb(hex) {
-      const h = hex.replace('#','');
-      const bigint = parseInt(h.length === 3 ? h.split('').map(c=>c+c).join('') : h, 16);
-      return { r: (bigint>>16)&255, g: (bigint>>8)&255, b: bigint&255 };
-    }
-    function rgbToHex({r,g,b}) {
-      const to = v => v.toString(16).padStart(2,'0');
-      return `#${to(r)}${to(g)}${to(b)}`;
-    }
-    function lighten(hex, amount = 0.55) { // 0~1
-      const {r,g,b} = hexToRgb(hex);
-      const L = (c) => Math.round(c + (255 - c) * amount);
-      return rgbToHex({ r: L(r), g: L(g), b: L(b) });
-    }
-    function isTooDark(hex) {
-      const {r,g,b} = hexToRgb(hex);
-      const luminance = (0.2126*(r/255)) + (0.7152*(g/255)) + (0.0722*(b/255));
-      return luminance < 0.35;
-    }
-    function hostMatches(h, domain) {
-      return h === domain || h.endsWith(`.${domain}`);
-    }
-    function pickBrandColor(u) {
-      const h = u.hostname.replace(/^www\./,'');
-      // 1) 호스트 기반 매칭
-      for (const key of Object.keys(BRAND_COLORS)) {
-        if (hostMatches(h, key)) return BRAND_COLORS[key];
-      }
-      // 2) 경로 기반 매칭 (예: sites.google.com/view/fclab-skku)
-      for (const rule of BRAND_PATH_COLORS) {
-        if (h === rule.host && u.pathname.startsWith(rule.pathPrefix)) return rule.color;
-      }
-      return null;
-    }
-
-    document.querySelectorAll('a[href^="http"]').forEach(a => {
-      try {
-        const u = new URL(a.href);
-        const h = u.hostname.replace(/^www\./,'');
-        // LinkedIn/GitHub는 예외 처리: brand-link 적용하지 않음
-        for (const s of SKIP_HOSTS) {
-          if (hostMatches(h, s)) return;
-        }
-        const brand = pickBrandColor(u);
-        if (!brand) return;
-
-        const finalColor = (prefersDark && isTooDark(brand)) ? lighten(brand, 0.55) : brand;
-        a.style.setProperty('--brand', finalColor);
-        a.classList.add('brand-link');
-      } catch (e) { /* 잘못된 href는 무시 */ }
-    });
-  })();
-  </script>
-
-  <!--
-    검색엔진 리치 결과(구조화 데이터). 실제 프로필만 남기고 플레이스홀더 제거.
-    - sameAs는 존재하는 링크로만 유지
-  -->
+  <!-- Structured Data -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -449,7 +637,7 @@
       "https://github.com/SaFD-00",
       "https://www.linkedin.com/in/name-seungwoo-baek/"
     ],
-    "jobTitle": "Research Engineer",
+    "jobTitle": "AI Researcher",
     "address": { "@type": "PostalAddress", "addressLocality": "Seoul", "addressCountry": "KR" }
   }
   </script>
